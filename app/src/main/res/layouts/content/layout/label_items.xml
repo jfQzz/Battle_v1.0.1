@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <TextView
+            android:id="@+id/tv_game_label_one"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:padding="5dp"
+            android:text="好玩"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_game_label_two"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:padding="5dp"
+            android:text="好玩"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_game_label_three"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:padding="5dp"
+            android:text="好玩"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_game_label_fore"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:padding="5dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            />
+    </LinearLayout>
+</FrameLayout>

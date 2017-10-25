@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#0c6f78</color>
+    <color name="colorPrimary">#14b9c8</color>
+    <color name="colorAccent">#14b9c8</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorLineSeparator">#eeeeee</color>
+    <color name="colorTxtTitle">#4a4a4a</color>
+    <color name="colorTxtSub">#82868c</color>
+    <color name="colorTxtOther">#5e646b</color>
+    <color name="colorHalfGlass">#774a4a4a</color>
+    <color name="colorRad">#f00505</color>
+    <color name="colorYellow">#ffda44</color>
+    <color name="colorLightGreen">#dbf0f9</color>
+</resources>

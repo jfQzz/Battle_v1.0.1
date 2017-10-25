@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.drawee.view.SimpleDraweeView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/iv_icon"
+    android:orientation="vertical"
+    android:layout_width="160dp"
+    android:layout_height="200dp"
+    fresco:actualImageScaleType="centerCrop"
+    fresco:roundedCornerRadius="3dp"
+    fresco:roundTopLeft="true"
+    fresco:roundTopRight="true"
+    fresco:roundBottomLeft="true"
+    fresco:roundBottomRight="true">
+
+</com.facebook.drawee.view.SimpleDraweeView>

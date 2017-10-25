@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wangxia.battle.activity.GuideActivity">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/guide_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
+        />
+    <Button
+        android:id="@+id/guide_btn"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="立即体验"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="60dp"
+        android:textSize="22sp"
+        android:background="@drawable/guide_start_background"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"/>
+</FrameLayout>

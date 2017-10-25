@@ -1,0 +1,105 @@
+<resources>
+    <string name="app_name">决战平安京助手</string>
+    <item name="tag_first" type="id"/>
+    <item name="tag_second" type="id"/>
+    <item name="tag_third" type="id"/>
+    <item name="tag_forth" type="id"/>
+    <string name="my_games">我的</string>
+    <string name="local_games">本地游戏</string>
+    <string name="my_download">我的下载</string>
+    <string name="browsing_history">我的浏览</string>
+    <string name="my_favorite">我的收藏</string>
+    <string name="user_feed_back">用户反馈</string>
+    <string name="about_us">关于我们</string>
+    <string name="enter_hints">登录后可以查看自己的收藏哦~</string>
+    <string name="enter_now">立即登录</string>
+    <string name="play_now">开始玩</string>
+    <string name="app_remark">决战平安京超神利器\nhackhome.com</string>
+    <string name="about_battle">关于决战,平安京助手</string>
+    <string name="exit_battle">再按一次离开决战,平安京</string>
+    <string name="update_hints">● 请更新到最新版本，否则无法正常使用 ●</string>
+    <string name="update_desc_hints">更新说明:</string>
+    <string name="update_now">立即更新</string>
+    <string name="install_now">立即安装</string>
+    <string name="exit">退出</string>
+    <string name="newest_version">最新版本</string>
+    <string name="launcher_fail">启动失败</string>
+    <string name="empty_hints">暂无记录</string>
+    <string name="activity">活动</string>
+    <string name="foot_behavior">com.wangxia.battle.animal.FootBehavior</string>
+    <string name="no_more_data">没有更多的数据啦！</string>
+    <string name="refresh_success">刷新成功</string>
+    <string name="game_name">决战平安京</string>
+    <string name="game_remark">阴阳师全式神收录在线激战</string>
+    <string name="game_desc">决战平安京测试服是一款3DMOBA掌上妖怪式神战斗的手机游戏，讲述平安年代的奇妙怪谈之下阴阳师收服了大量的式神，原本只是寻常的妖怪但是经过阴阳师的训练之后拥有了独特的战斗能力，进入战场中团队比拼证明自己是最强的式神。</string>
+    <string name="home">首页</string>
+    <string name="recommend">发现</string>
+    <string name="strategy">攻略</string>
+    <string name="amusement">娱乐</string>
+    <string name="article_labels">高手进阶,式神大全,新手攻略,手游礼包,活动资讯,装备大全,手游问答,新手入门,游戏视频</string>
+    <string name="download">下载</string>
+    <string name="go_on">继续</string>
+    <string name="install">安装</string>
+    <string name="open">打开</string>
+    <string name="game_package">com.netease.moba</string>
+    <!--每日一更  暂无-->
+    <string name="update_every_day">活动咨询</string>
+    <string name="hero_list">式神大全</string>
+    <string name="arm_list">装备大全</string>
+    <string name="arm_pic_list">装备图鉴</string>
+    <string name="bird_book">入门秘籍</string>
+    <string name="good_pic">2k壁纸</string>
+    <string name="official_enter">官网入口</string>
+    <string name="game_video">游戏视频</string>
+    <string name="game_answer">手游问答</string>
+    <string name="player_strategy">玩家攻略</string>
+    <string name="hero_type">刺客,法师,辅助,射手,坦克,游侠,战士</string>
+    <string name="arm_type">打野,法术,防御,辅助,攻击,攻略,移动</string>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~StringArray~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <string-array name="game_detail_tabs">
+        <item>详情</item>
+        <item>评价</item>
+    </string-array>
+    <string-array name="game_rank_tabs">
+        <item>精选</item>
+        <item>新游</item>
+        <item>破解</item>
+        <item>单机</item>
+        <item>变态</item>
+        <item>网游</item>
+        <item>汉化</item>
+    </string-array>
+    <string-array name="my_game_tabs">
+        <item>已装</item>
+        <item>浏览</item>
+    </string-array>
+    <string-array name="game_and_article">
+        <item>游戏</item>
+        <item>文章</item>
+    </string-array>
+    <string-array name="author_name">
+        <item>小黑骑士</item>
+        <item>九块腹肌</item>
+        <item>萌神雪雪</item>
+        <item>墨水年华</item>
+        <item>他大舅</item>
+        <item>yunJin</item>
+        <item>宫本武藏</item>
+        <item>北野黑侠</item>
+        <item>Amen</item>
+        <item>南门吹风</item>
+        <item>可爱的酵母菌</item>
+        <item>折原雅子</item>
+    </string-array>
+    <string-array name="function_type">
+        <item>每日一更</item>
+        <item>式神介绍</item>
+        <item>装备图鉴</item>
+        <item>入门秘籍</item>
+        <item>2K壁纸</item>
+        <item>游戏视频</item>
+        <item>手游问答</item>
+        <item>玩家攻略</item>
+    </string-array>
+</resources>

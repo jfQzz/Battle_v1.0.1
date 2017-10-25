@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorLightGreen"
+    android:orientation="vertical">
+
+    <com.bigkoo.convenientbanner.ConvenientBanner xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
+        android:layout_width="350dp"
+        android:layout_height="170dp"
+        android:layout_gravity="center_horizontal"
+        app:canLoop="true" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tool_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_game_info"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_app_ico"
+                android:layout_width="99dp"
+                android:layout_height="56dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="centerCrop"
+                fresco:roundBottomLeft="true"
+                fresco:roundBottomRight="true"
+                fresco:roundTopLeft="true"
+                fresco:roundTopRight="true"
+                fresco:roundedCornerRadius="10dp" />
+
+            <ImageView
+                android:layout_width="111dp"
+                android:layout_height="68dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_box" />
+
+            <TextView
+                android:id="@+id/tv_app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/iv_app_ico"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/iv_app_ico"
+                android:singleLine="true"
+                android:textColor="@color/colorTxtTitle" />
+
+            <TextView
+                android:id="@+id/tv_app_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tv_app_title"
+                android:layout_below="@id/tv_app_title"
+                android:singleLine="true"
+                android:textColor="@color/colorTxtSub"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_app_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tv_app_title"
+                android:layout_below="@id/tv_app_mark"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/colorTxtOther"
+                android:textSize="10sp" />
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_app_title">
+
+                <ProgressBar
+                    android:id="@+id/pg_download_rate"
+                    style="@style/downloadProgressBarHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:max="100" />
+
+                <TextView
+                    android:id="@+id/tv_download_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/download"
+                    android:textColor="@color/colorWhite" />
+
+            </FrameLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_today_update"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/activity_info_ic"
+                android:gravity="center"
+                android:text="@string/update_every_day"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_hero_list"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/hero_list_ic"
+                android:gravity="center"
+                android:text="@string/hero_list"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_arm_list"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/arm_introduce_ic"
+                android:gravity="center"
+                android:text="@string/arm_pic_list"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_bird_book"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/bird_book_ic"
+                android:gravity="center"
+                android:text="@string/bird_book"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_game_answer"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/game_answer_ic"
+                android:gravity="center"
+                android:text="@string/game_answer"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_game_video"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/game_video_ic"
+                android:gravity="center"
+                android:text="@string/game_video"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:id="@+id/tv_player_strategy"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/player_strategy_ic"
+                android:gravity="center"
+                android:text="@string/player_strategy"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_official_enter"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/good_pic_ic"
+                android:gravity="center"
+                android:text="@string/official_enter"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:src="@drawable/title_gay_pic" />
+</LinearLayout>

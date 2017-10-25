@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_video_pic"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        fresco:actualImageScaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_author_ico"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            fresco:actualImageScaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_video_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@id/iv_author_ico"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorTxtTitle"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_video_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_video_title"
+            android:layout_below="@id/tv_video_title"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorTxtSub"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</LinearLayout>

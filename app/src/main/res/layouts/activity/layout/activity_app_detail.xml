@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.wangxia.battle.activity.AppDetailActivity">
+
+    <include layout="@layout/actionbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="15dp">
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/iv_game_ico"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            fresco:actualImageScaleType="centerCrop"
+                            fresco:roundBottomLeft="true"
+                            fresco:roundBottomRight="true"
+                            fresco:roundTopLeft="true"
+                            fresco:roundTopRight="true"
+                            fresco:roundedCornerRadius="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="5dp">
+
+                            <TextView
+                                android:id="@+id/tv_game_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tv_game_size"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_game_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:singleLine="true"
+                                android:ellipsize="end"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_vertical"
+                        android:paddingRight="7dp">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/iv_favorite"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/no_favorite"
+                            android:visibility="gone"/>
+
+                        <TextView
+                            android:id="@+id/tv_attention"
+                            android:layout_width="50dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="7dp"
+                            android:background="@drawable/color_accent_frame_radius_shape"
+                            android:gravity="center"
+                            android:text="关注"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:visibility="gone"/>
+
+                        <ImageView
+                            android:id="@+id/iv_download"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_marginLeft="7dp"
+                            android:padding="3dp"
+                            android:gravity="center_vertical"
+                            android:src="@drawable/more_ico"
+                             />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+                <com.androidkun.xtablayout.XTabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:layout_scrollFlags="exitUntilCollapsed|scroll"
+                    app:xTabDividerColor="@color/colorLineSeparator"
+                    app:xTabDividerGravity="center"
+                    app:xTabDividerHeight="25dp"
+                    app:xTabDividerWidth="1dp"
+                    app:xTabIndicatorColor="@color/colorAccent"
+                    app:xTabIndicatorHeight="3dp"
+                    app:xTabMode="fixed"
+                    app:xTabSelectedTextColor="@color/colorAccent"
+                    app:xTabSelectedTextSize="15sp"
+                    app:xTabTextColor="#666666"
+                    app:xTabTextSize="15sp" />
+            </android.support.design.widget.AppBarLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorLineSeparator"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </android.support.design.widget.CoordinatorLayout>
+
+      <include layout="@layout/loading_view"/>
+    </FrameLayout>
+</LinearLayout>
