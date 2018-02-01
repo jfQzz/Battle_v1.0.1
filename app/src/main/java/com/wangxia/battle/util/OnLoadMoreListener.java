@@ -10,7 +10,7 @@ import static android.support.v7.widget.RecyclerView.OnScrollListener;
  * Email:18772833900@163.com
  * Explain：
  */
-public class OnLoadMoreListener extends OnScrollListener {
+class OnLoadMoreListener extends OnScrollListener {
     private int lastVisibleItemPosition;
     private ILoadMoreListener iLoadMore;
 

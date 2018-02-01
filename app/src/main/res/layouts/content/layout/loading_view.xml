@@ -2,14 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loading"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    >
+    android:layout_height="match_parent">
     <com.github.ybq.android.spinkit.SpinKitView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/SpinKitView.Large.Wave"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        style="@style/SpinKitView.Small.FadingCircle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         app:SpinKit_Color="@color/colorAccent" />
 </FrameLayout>

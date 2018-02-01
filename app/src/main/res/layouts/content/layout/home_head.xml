@@ -7,14 +7,14 @@
     android:background="@color/colorLightGreen"
     android:orientation="vertical">
 
-    <com.bigkoo.convenientbanner.ConvenientBanner xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!--大小 720*180-->
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/banner"
-        android:layout_width="350dp"
-        android:layout_height="170dp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:layout_gravity="center_horizontal"
         app:canLoop="true" />
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_height="68dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pic_box" />
+                android:src="@drawable/ic_pic_box" />
 
             <TextView
                 android:id="@+id/tv_app_title"
@@ -120,7 +120,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/activity_info_ic"
+                android:drawableTop="@drawable/ic_activity_info"
                 android:gravity="center"
                 android:text="@string/update_every_day"
                 android:textColor="@color/colorTxtTitle"
@@ -132,7 +132,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/hero_list_ic"
+                android:drawableTop="@drawable/ic_hero_list"
                 android:gravity="center"
                 android:text="@string/hero_list"
                 android:textColor="@color/colorTxtTitle"
@@ -144,21 +144,21 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/arm_introduce_ic"
+                android:drawableTop="@drawable/ic_arm_introduce"
                 android:gravity="center"
                 android:text="@string/arm_pic_list"
                 android:textColor="@color/colorTxtTitle"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/tv_bird_book"
+                android:id="@+id/tv_curse_all"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/bird_book_ic"
+                android:drawableTop="@drawable/ic_bird_book"
                 android:gravity="center"
-                android:text="@string/bird_book"
+                android:text="@string/all_curse"
                 android:textColor="@color/colorTxtTitle"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -175,7 +175,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/game_answer_ic"
+                android:drawableTop="@drawable/ic_game_answer"
                 android:gravity="center"
                 android:text="@string/game_answer"
                 android:textColor="@color/colorTxtTitle"
@@ -187,7 +187,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/game_video_ic"
+                android:drawableTop="@drawable/ic_game_video"
                 android:gravity="center"
                 android:text="@string/game_video"
                 android:textColor="@color/colorTxtTitle"
@@ -195,14 +195,14 @@
 
 
             <TextView
-                android:id="@+id/tv_player_strategy"
+                android:id="@+id/tv_bird_book"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/player_strategy_ic"
+                android:drawableTop="@drawable/ic_player_strategy"
                 android:gravity="center"
-                android:text="@string/player_strategy"
+                android:text="@string/bird_book"
                 android:textColor="@color/colorTxtTitle"
                 android:textSize="12sp" />
 
@@ -212,7 +212,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/good_pic_ic"
+                android:drawableTop="@drawable/ic_good_pic"
                 android:gravity="center"
                 android:text="@string/official_enter"
                 android:textColor="@color/colorTxtTitle"

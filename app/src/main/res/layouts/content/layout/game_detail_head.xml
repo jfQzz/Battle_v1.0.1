@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,56 +7,71 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/color_accent_round_shape"
-            android:text="中"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:textColor="@color/colorWhite"
-            android:layout_marginLeft="20dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:text="简体中文"
-            android:textColor="@color/colorTxtTitle"
-            android:textSize="12sp" />
-
-        <android.support.v4.widget.Space
+        <LinearLayout
+            android:id="@+id/ll_add_qq_group"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="30dp"
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/login_qq"
+                android:gravity="center"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/qq_group_number"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
             android:layout_height="30dp"
-            android:background="@drawable/color_accent_round_shape"
-            android:text="英"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:textColor="@color/colorWhite"
-            android:layout_marginLeft="20dp"
-            android:textStyle="bold"/>
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorLineSeparator" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:text="英文"
-            android:textColor="@color/colorTxtTitle"
-            android:textSize="12sp" />
-
-        <android.support.v4.widget.Space
+        <LinearLayout
+            android:id="@+id/ll_add_wx_group"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/login_wechet"
+                android:gravity="center"
+                android:text="英"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/wx_group_number"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <View
@@ -82,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="简介"
+            android:text="@string/shot_desc"
             android:textColor="@color/colorTxtTitle" />
 
     </LinearLayout>
@@ -110,7 +124,7 @@
         android:gravity="center"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:text="显示全部"
+        android:text="@string/show_all"
         android:textColor="@color/colorAccent"
         android:textSize="12sp" />
 
@@ -119,36 +133,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="@color/colorLineSeparator" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
-        android:visibility="gone">
-
-        <View
-            android:layout_width="5dp"
-            android:layout_height="20dp"
-            android:background="@color/colorAccent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="更新内容"
-            android:textColor="@color/colorTxtTitle" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_game_update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -167,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="详细信息"
+            android:text="@string/detail_info"
             android:textColor="@color/colorTxtTitle" />
 
     </LinearLayout>
@@ -176,11 +160,18 @@
         android:id="@+id/tv_game_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:lineSpacingMultiplier="1.5"
         android:paddingLeft="17dp"
         android:paddingRight="17dp"
         android:textColor="@color/colorTxtTitle"
         android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorLineSeparator" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rl_more_game"

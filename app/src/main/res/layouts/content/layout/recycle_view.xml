@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
 <android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_icons"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="230dp"
     android:scrollbars="none"
     android:background="@color/colorLineSeparator"
     />
-</FrameLayout>

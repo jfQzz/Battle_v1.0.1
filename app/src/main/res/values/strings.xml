@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">决战平安京助手</string>
-    <item name="tag_first" type="id"/>
-    <item name="tag_second" type="id"/>
-    <item name="tag_third" type="id"/>
-    <item name="tag_forth" type="id"/>
+    <item name="tag_first" type="id" />
+    <item name="tag_second" type="id" />
+    <item name="tag_third" type="id" />
+    <item name="tag_forth" type="id" />
+    <item type="id" name="statusbarutil_fake_status_bar_view" />
+    <item type="id" name="statusbarutil_translucent_view" />
     <string name="my_games">我的</string>
     <string name="local_games">本地游戏</string>
     <string name="my_download">我的下载</string>
@@ -15,7 +17,7 @@
     <string name="enter_now">立即登录</string>
     <string name="play_now">开始玩</string>
     <string name="app_remark">决战平安京超神利器\nhackhome.com</string>
-    <string name="about_battle">关于决战,平安京助手</string>
+    <string name="about_battle">关于平安京助手</string>
     <string name="exit_battle">再按一次离开决战,平安京</string>
     <string name="update_hints">● 请更新到最新版本，否则无法正常使用 ●</string>
     <string name="update_desc_hints">更新说明:</string>
@@ -31,7 +33,7 @@
     <string name="refresh_success">刷新成功</string>
     <string name="game_name">决战平安京</string>
     <string name="game_remark">阴阳师全式神收录在线激战</string>
-    <string name="game_desc">决战平安京测试服是一款3DMOBA掌上妖怪式神战斗的手机游戏，讲述平安年代的奇妙怪谈之下阴阳师收服了大量的式神，原本只是寻常的妖怪但是经过阴阳师的训练之后拥有了独特的战斗能力，进入战场中团队比拼证明自己是最强的式神。</string>
+    <string name="game_desc">决战平安京是一款3D MOBA掌上妖怪式神战斗的手机游戏，讲述平安年代的奇妙怪谈之下阴阳师收服了大量的式神，原本只是寻常的妖怪但是经过阴阳师的训练之后拥有了独特的战斗能力，进入战场中团队比拼证明自己是最强的式神。</string>
     <string name="home">首页</string>
     <string name="recommend">发现</string>
     <string name="strategy">攻略</string>
@@ -50,12 +52,122 @@
     <string name="bird_book">入门秘籍</string>
     <string name="good_pic">2k壁纸</string>
     <string name="official_enter">官网入口</string>
+    <string name="all_curse">灵咒大全</string>
     <string name="game_video">游戏视频</string>
     <string name="game_answer">手游问答</string>
     <string name="player_strategy">玩家攻略</string>
     <string name="hero_type">刺客,法师,辅助,射手,坦克,游侠,战士</string>
     <string name="arm_type">打野,法术,防御,辅助,攻击,攻略,移动</string>
-
+    <string name="phone_number">手机号码</string>
+    <string name="phone_number_or_id">手机号码或者ID</string>
+    <string name="password">密码</string>
+    <string name="password_hint">建议使用字母 · 字符 · 数字混合密码</string>
+    <string name="login">登 录</string>
+    <string name="register">注 册</string>
+    <string name="register_now">立即注册</string>
+    <string name="forget_password">忘记密码 ?</string>
+    <string name="select_login_way">还可以选择以下方式登录</string>
+    <string name="login_xl">新 浪</string>
+    <string name="login_wx">微 信</string>
+    <string name="login_qq">QQ登录</string>
+    <string name="input_error">请输入完整信息</string>
+    <string name="input_phone_num">请输入注册手机号码</string>
+    <string name="input_find_phone_num">请输入手机号码</string>
+    <string name="input_num_error">输入的手机号码不完整</string>
+    <string name="input_password_empty">请输入的密码</string>
+    <string name="input_password_error">密码长度小于6位</string>
+    <string name="input_auth_code">输入验证码</string>
+    <string name="get_auth_code">获取验证码</string>
+    <string name="input_auth_code_hints">输入验证码,10分钟内有效</string>
+    <string name="next">下一步</string>
+    <string name="previous">上一步</string>
+    <string name="confirm_user_account">确定你的注册信息</string>
+    <string name="verify_user_identity">验证你的身份</string>
+    <string name="confirm_account_hints">请输入你需要找回密码的手机号码</string>
+    <string name="verify_identity_hints">点击获取验证码，我们将向您绑定的手机发送一条验证码，以便验证您的身份</string>
+    <string name="reset_password">设置新的密码</string>
+    <string name="reset_password_hints">为了您的安全建议不要和以前的密码相同，同时经常更换密码可以提高账户安全性</string>
+    <string name="confirm_password">重新输入</string>
+    <string name="input_again">再次输入</string>
+    <string name="new_password">新密码</string>
+    <string name="new_password_input_error">新密码前后输入不一致</string>
+    <string name="sure">确定</string>
+    <string name="account_password_error">账户或密码输入错误</string>
+    <string name="account_locked">账户被锁定，请联系管理员</string>
+    <string name="login_error">登录失败,请重试</string>
+    <string name="login_success">欢迎回来</string>
+    <string name="register_code_hints">验证码已发送请注意查收</string>
+    <string name="register_code_please">请获取验证码</string>
+    <string name="register_code_send_error">验证码发送失败</string>
+    <string name="phone_had_register">手机号已注册</string>
+    <string name="register_code_quick">操作频繁</string>
+    <string name="register_argument_error">参数错误</string>
+    <string name="register_success">注册成功</string>
+    <string name="find_password_success">找回密码成功</string>
+    <string name="auto_login_success">自动登录成功</string>
+    <string name="password_not_null">密码不能为空</string>
+    <string name="verification_code_not_complete">验证码不完整</string>
+    <string name="user_ico">头像</string>
+    <string name="user_id">ID</string>
+    <string name="user_nick">昵称</string>
+    <string name="user_phone_number">手机号码</string>
+    <string name="user_qq">腾 讯  Q Q</string>
+    <string name="user_wx">微信账号</string>
+    <string name="user_sina">新浪微博</string>
+    <string name="user_gender">性别</string>
+    <string name="user_location">所在地</string>
+    <string name="user_exchange_password">修改密码</string>
+    <string name="app_setting">系统设置</string>
+    <string name="default_nick">小樱</string>
+    <string name="default_ID">未知</string>
+    <string name="default_gender">女</string>
+    <string name="no_bind">未绑定</string>
+    <string name="pic">相册</string>
+    <string name="take_photo">拍照</string>
+    <string name="cancel">取消</string>
+    <string name="had_cancel">已取消</string>
+    <string name="last_login_time">最后一次登录时间：</string>
+    <string name="user_safety">账户安全</string>
+    <string name="show">显示</string>
+    <string name="hide">隐藏</string>
+    <string name="pic_crop_error">图片裁剪失败</string>
+    <string name="modify_success">修改成功</string>
+    <string name="unbind_error">大大，先绑定手机号才能解绑哟!</string>
+    <string name="unbind_hints">大大，您要解除绑定的  %s  吗?</string>
+    <string name="no_comment">暂无相关评论~</string>
+    <string name="no_net_hint">当前无网络连接,请检查您的网络!</string>
+    <string name="dialog_hint">温馨提示</string>
+    <string name="to_set">去设置</string>
+    <string name="load_more_error">加载失败</string>
+    <string name="show_all">显示全部</string>
+    <string name="all">全部</string>
+    <string name="collapse">收起</string>
+    <string name="shot_desc">简介</string>
+    <string name="detail_info">详细信息</string>
+    <string name="skill_one">一技能</string>
+    <string name="skill_two">二技能</string>
+    <string name="skill_three">三技能</string>
+    <string name="skill_fore">四技能</string>
+    <string name="skill_main">主升</string>
+    <string name="skill_next">副升</string>
+    <string name="re_add_point">推荐技能</string>
+    <string name="arm_need_null_hint">基础装备，无合成所需装备</string>
+    <string name="arm_make_null_hint">暂时无法进阶</string>
+    <string name="client_busy">服务器繁忙，请稍后再试</string>
+    <string name="no_net">当前无网络，请打开网络</string>
+    <string name="set">设置</string>
+    <string name="clear_memory">清理缓存</string>
+    <string name="check_version">版本检查</string>
+    <string name="account_manager">账户管理</string>
+    <string name="account_register">注册账户</string>
+    <string name="find_password">找回密码</string>
+    <string name="person_manager">用户中心</string>
+    <string name="app_new_version">当前已是最新版本</string>
+    <string name="clear_cache_finish">清理完毕</string>
+    <string name="all_evaluate">全部评论</string>
+    <string name="empty_evaluate_hint">虚位以待~</string>
+    <string name="qq_group_number">游戏玩家激战营地\nqq群：597341641</string>
+    <string name="wx_group_number">游戏快报精彩不断\n公众号：jzpaj520</string>
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~StringArray~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <string-array name="game_detail_tabs">
         <item>详情</item>
@@ -74,23 +186,9 @@
         <item>已装</item>
         <item>浏览</item>
     </string-array>
-    <string-array name="game_and_article">
-        <item>游戏</item>
+    <string-array name="video_and_article">
+        <item>视频</item>
         <item>文章</item>
-    </string-array>
-    <string-array name="author_name">
-        <item>小黑骑士</item>
-        <item>九块腹肌</item>
-        <item>萌神雪雪</item>
-        <item>墨水年华</item>
-        <item>他大舅</item>
-        <item>yunJin</item>
-        <item>宫本武藏</item>
-        <item>北野黑侠</item>
-        <item>Amen</item>
-        <item>南门吹风</item>
-        <item>可爱的酵母菌</item>
-        <item>折原雅子</item>
     </string-array>
     <string-array name="function_type">
         <item>每日一更</item>

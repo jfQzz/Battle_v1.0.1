@@ -1,8 +1,8 @@
 package com.wangxia.battle.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,9 +12,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 import com.wangxia.battle.R;
 import com.wangxia.battle.activity.TabWithPagerActivity;
+import com.wangxia.battle.callback.ISuccessCallbackData;
+import com.wangxia.battle.fragment.base.BaseFragment;
+import com.wangxia.battle.model.bean.UserInfo;
+import com.wangxia.battle.presenter.impPresenter.UserInfoPresenter;
 import com.wangxia.battle.util.Constant;
-
-import java.lang.ref.WeakReference;
+import com.wangxia.battle.util.SpUtil;
+import com.wangxia.battle.util.UserUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +29,7 @@ import butterknife.Unbinder;
  * Email:18772833900@163.com
  * Explain：
  */
-public class MineFragment extends BaseFragment implements View.OnClickListener{
+public class MineFragment extends BaseFragment implements View.OnClickListener, ISuccessCallbackData {
     @BindView(R.id.rl_user_info)
     RelativeLayout rlUserInfo;
     @BindView(R.id.iv_user_ico)
@@ -40,18 +44,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     LinearLayout llBrowsingHistory;
     @BindView(R.id.ll_my_favorite)
     LinearLayout llMyFavorite;
-    @BindView(R.id.ll_feed_back)
-    LinearLayout llFeedBack;
-    private Context mContext;
+    @BindView(R.id.ll_set)
+    LinearLayout llSet;
     private Unbinder mBind;
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
     public static MineFragment newInstance() {
         Bundle args = new Bundle();
@@ -60,23 +56,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         return fragment;
     }
 
+
+
     @Override
     public View initView() {
         View view = View.inflate(mContext, R.layout.fragment_mine, null);
-        mBind = ButterKnife.bind(this,view);
-        hideWhenExit();
+        mBind = ButterKnife.bind(this, view);
         return view;
     }
 
-    /**
-     * 后台说目前不做登录
-     */
-    private void hideWhenExit() {
-        ivUserIco.setVisibility(View.INVISIBLE);
-        tvUserNick.setVisibility(View.GONE);
-        tvUserId.setVisibility(View.GONE);
-
-    }
 
     @Override
     public void initData() {
@@ -88,13 +76,31 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         llLocalGames.setOnClickListener(this);
         llBrowsingHistory.setOnClickListener(this);
         llMyFavorite.setOnClickListener(this);
-        llFeedBack.setOnClickListener(this);
+        llSet.setOnClickListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("MineFragment");
+        //检测登录状态
+        if (SpUtil.getBoolean(mContext, Constant.userInfo.USER_STATE, false)) {
+            showUerInfo();
+        }else {
+            //显示登录等相关的信息
+            tvUserNick.setText(getString(R.string.enter_now));
+            tvUserId.setText(getString(R.string.enter_hints));
+            ivUserIco.setImageResource(R.drawable.ic_user_icon_empty);
+        }
+    }
+
+    /**
+     * 用户的信息
+     */
+    private void showUerInfo() {
+        UserInfoPresenter userInfoPresenter = new UserInfoPresenter(this);
+        userInfoPresenter.queryList(Constant.number.ZERO, UserUtil.getCookies(), Constant.number.ZERO);
+
     }
 
     @Override
@@ -110,14 +116,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     }
 
 
-
     @Override
     public void onClick(View v) {
-            Intent intent = null;
-        switch (v.getId()){
+        Intent intent = null;
+        switch (v.getId()) {
             //登录/个人详情
             case R.id.rl_user_info:
-
+                intent = new Intent(mContext, TabWithPagerActivity.class);
+                if (SpUtil.getBoolean(mContext, Constant.userInfo.USER_STATE, false))
+                    intent.putExtra(Constant.string.ARG_ONE, Constant.number.ONE);
+                else
+                    intent.putExtra(Constant.string.ARG_ONE, Constant.number.EIGHT);
                 break;
             case R.id.ll_local_game:
                 intent = new Intent(mContext, TabWithPagerActivity.class);
@@ -136,14 +145,83 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                 intent.putExtra(Constant.string.ARG_ONE, Constant.number.THREE);
                 break;
             //暂时改为关于我们，需要在加反馈
-            case R.id.ll_feed_back:
+            case R.id.ll_set:
                 intent = new Intent(mContext, TabWithPagerActivity.class);
                 intent.putExtra(Constant.string.ARG_ONE, Constant.number.FORE);
                 break;
         }
 
-        if(null != intent){
+        if (null != intent) {
             startActivity(intent);
         }
     }
+
+    @Override
+    public void getResult(Object dataBen, int type) {
+        if (null == dataBen) {
+            return;
+        }
+        switch (type) {
+            case Constant.number.ZERO:
+                com.wangxia.battle.model.bean.UserInfo userInfo = (com.wangxia.battle.model.bean.UserInfo) dataBen;
+                if (null != userInfo) {
+                    if(TextUtils.equals("200",userInfo.getStatus())){
+                            ivUserIco.setImageURI(userInfo.getUserpic());
+                            tvUserNick.setText(userInfo.getUsernike());
+                            tvUserId.setText("ID : "+userInfo.getUserid());
+                            saveUserInfo(userInfo);
+                    }else {
+                        //显示登录等相关的信息(出现意外及时处理本地缓存的信息，以及登录状态还原)
+                        UserUtil.exit(mContext);
+                        tvUserNick.setText(getString(R.string.enter_now));
+                        tvUserId.setText(getString(R.string.enter_hints));
+                        ivUserIco.setImageResource(R.drawable.ic_user_icon_empty);
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void failRequest() {
+
+    }
+    @Override
+    public void errorRequest() {
+
+    }
+
+    private void saveUserInfo(UserInfo userInfo) {
+        String userId = userInfo.getUserid();
+        String userNike = userInfo.getUsernike();
+        SpUtil.putString(mContext, Constant.userInfo.USER_NICK, userNike);
+        SpUtil.putString(mContext, Constant.userInfo.USER_ICON, userInfo.getUserpic());
+        SpUtil.putString(mContext, Constant.userInfo.USER_ID, userId);
+        SpUtil.putString(mContext, Constant.userInfo.USER_TYPE, userInfo.getIspass());
+        String gender = TextUtils.equals("1",userInfo.getUsersex()) ? "男":"女";
+        SpUtil.putString(mContext, Constant.userInfo.USER_GENDER, gender);
+        SpUtil.putString(mContext, Constant.userInfo.USER_LOGIN_TIME, getString(R.string.last_login_time) + userInfo.getUserretime());
+        //环信注册
+//        try {
+//            EMClient.getInstance().createAccount(userNike, userId);
+//        } catch (HyphenateException e) {
+//            e.printStackTrace();
+//            MyToast.s(mContext,"环信注册失败");
+//        }
+        // 最好在会话的主页加上
+//        EMClient.getInstance().chatManager().loadAllConversations();
+//        EMClient.getInstance().groupManager().loadAllGroups();
+    }
+
+
+    public void changeToMobile() {
+
+    }
+
+
+    public void changeToWifi() {
+
+    }
+
+
 }

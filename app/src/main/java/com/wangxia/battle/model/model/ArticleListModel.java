@@ -2,17 +2,13 @@ package com.wangxia.battle.model.model;
 
 import android.text.TextUtils;
 
+import com.wangxia.battle.callback.ArticleCallback;
 import com.wangxia.battle.model.IModel;
-import com.wangxia.battle.model.bean.ArticleList;
 import com.wangxia.battle.model.http.UrlConstant;
 import com.wangxia.battle.presenter.callback.ICallback;
 import com.wangxia.battle.util.Constant;
-import com.wangxia.battle.util.GsonUtil;
 import com.wangxia.battle.util.HttpUtil;
 import com.zhy.http.okhttp.builder.GetBuilder;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
 
 /**
  * 获取传奇文章列表
@@ -27,8 +23,7 @@ public class ArticleListModel implements IModel {
                         .addParams("page", String.valueOf(pageNo));
                 break;
             case Constant.number.ONE:
-                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.BANNER_ARTICLE).addParams("size", String.valueOf(Constant.number.FIVE))
-                        .addParams("appname", String.valueOf("决战平安京"));
+                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.BANNER_ARTICLE).addParams("size", String.valueOf(Constant.number.FIVE));
                 break;
             //决战文章分类
             case Constant.number.TWO:
@@ -48,32 +43,19 @@ public class ArticleListModel implements IModel {
                 break;
             //手游问答
             case Constant.number.FIVE:
-                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.GAME_ANSWER+"&labels=手游问答").addParams("page", String.valueOf(pageNo));
+                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.GAME_ANSWER + "&labels=手游问答").addParams("page", String.valueOf(pageNo));
                 break;
             //玩家攻略
             case Constant.number.SIX:
                 builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.PLAYER_RAISE).addParams("page", String.valueOf(pageNo));
                 break;
             case Constant.number.SEVEN:
-                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.HERO_TYPE_LIST+args).addParams("page", String.valueOf(pageNo));
+                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.HERO_TYPE_LIST + args).addParams("page", String.valueOf(pageNo));
                 break;
             case Constant.number.EIGHT:
-                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.ARM_TYPE_LIST+args).addParams("page", String.valueOf(pageNo));
+                builder.url(UrlConstant.DOMAIN_NAME + UrlConstant.ARM_TYPE_LIST + args).addParams("page", String.valueOf(pageNo));
                 break;
         }
         builder.build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (!TextUtils.isEmpty(response)) {
-                            iCallback.success(GsonUtil.getGson().fromJson(response, ArticleList.class), mId);
-                        }
-                    }
-                });
-    }
-}
+                .execute(new ArticleCallback(iCallback,mId));
+    }}

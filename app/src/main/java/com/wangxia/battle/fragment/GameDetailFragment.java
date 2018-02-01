@@ -1,23 +1,32 @@
 package com.wangxia.battle.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wangxia.battle.R;
 import com.wangxia.battle.activity.AppDetailActivity;
 import com.wangxia.battle.activity.TabWithPagerActivity;
 import com.wangxia.battle.adapter.GameDetailAdapter;
+import com.wangxia.battle.fragment.base.LazyBaseFragment;
 import com.wangxia.battle.model.bean.AppInfo;
+import com.wangxia.battle.model.bean.MultipleGameBean;
 import com.wangxia.battle.util.Constant;
+import com.wangxia.battle.util.MyToast;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +39,9 @@ import butterknife.Unbinder;
  * Email:18772833900@163.com
  * Explain：游戏详情页
  */
-public class GameDetailFragment extends BaseFragment {
+public class GameDetailFragment extends LazyBaseFragment {
     @BindView(R.id.recycle_view)
     RecyclerView rl_icons;
-    private Context mContext;
     private AppInfo mAppInfo;
     private Unbinder mBind;
     private GameDetailAdapter mGameDetailAdapter;
@@ -46,12 +54,6 @@ public class GameDetailFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +68,6 @@ public class GameDetailFragment extends BaseFragment {
     public View initView() {
         View view = View.inflate(mContext, R.layout.fragment_game_detail, null);
         mBind = ButterKnife.bind(this, view);
-
         rl_icons.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         List<AppInfo.PicBean> pic = mAppInfo.getPic();
         int count = pic.size();
@@ -75,11 +76,11 @@ public class GameDetailFragment extends BaseFragment {
             icons.add(pic.get(i).getName());
         }
         String labels = mAppInfo.getLabels();
-        List<Object> list = new ArrayList<>(3);
-        list.add(labels);
-        list.add(icons);
-        list.add(mAppInfo);
-        mGameDetailAdapter = new GameDetailAdapter(mContext, list);
+        List<MultipleGameBean> list = new ArrayList<>(3);
+        list.add(new MultipleGameBean(labels));
+        list.add(new MultipleGameBean(icons));
+        list.add(new MultipleGameBean(mAppInfo));
+        mGameDetailAdapter = new GameDetailAdapter(list);
         rl_icons.setAdapter(mGameDetailAdapter);
         return view;
     }
@@ -107,11 +108,11 @@ public class GameDetailFragment extends BaseFragment {
             public void openOrCloseTxt(TextView view) {
                 CharSequence text = view.getText();
                  TextView gameDesc = (TextView) view.getTag(R.id.tag_first);
-                if(text.equals("显示全部")){
-                        view.setText("收起");
+                if(text.equals(getString(R.string.show_all))){
+                        view.setText(getString(R.string.collapse));
                         gameDesc.setMaxLines(Integer.MAX_VALUE/2);
                 }else {
-                        view.setText("显示全部");
+                        view.setText(getString(R.string.show_all));
                         gameDesc.setMaxLines(4);
                 }
             }
@@ -123,8 +124,52 @@ public class GameDetailFragment extends BaseFragment {
                 startActivity(intent);
 
             }
+
+            @Override
+            public void addQqGroup() {
+                addGroup(Constant.number.ZERO);
+            }
+
+            @Override
+            public void addWxGroup() {
+                addGroup(Constant.number.ONE);
+
+            }
         });
 
+    }
+
+    /**
+     *
+     * @param type 0:QQ  1:wx
+     */
+    private void addGroup(int type) {
+        Intent intent = new Intent();
+        if(Constant.number.ZERO == type){
+            intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "ZxasxSH7FwHTJEQ0XT-uOsH1DSuuOeYk"));
+        }else {
+            ClipboardManager clipManager = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText("simple text", "wxhackhome");
+            clipManager.setPrimaryClip(clipData);
+            if (clipManager.hasPrimaryClip()) {
+                MyToast.s(mContext, "jzpaj520 已复制");
+            }
+            ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setComponent(cmp);
+        }
+
+        PackageManager pm = mContext.getPackageManager();
+        List<ResolveInfo> resolveInfo = pm.queryIntentActivities(intent, 0);
+        if (resolveInfo.size() == 0) {
+            MyToast.showToast(mContext, "你的手机未安装相关软件", Toast.LENGTH_SHORT);
+            return;
+        } else {
+            //开启一个新的栈
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        startActivity(intent);
     }
 
     @Override

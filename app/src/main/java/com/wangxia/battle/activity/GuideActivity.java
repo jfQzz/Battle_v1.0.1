@@ -76,7 +76,7 @@ public class GuideActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.enteranim_right_to_left, R.anim.exitanim_right_to_left);
+                overridePendingTransition(R.anim.enter_right_to_left, R.anim.exit_right_to_left);
                 SpUtil.putBoolean(GuideActivity.this, Constant.string.IS_FIRST_ENTER, true);
                 finish();
             }
@@ -101,9 +101,11 @@ public class GuideActivity extends BaseActivity {
                 } else {
                     if (Constant.number.ONE == position) {
                         //做一下权限申请
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
                             //检查是否拥有权限
-                            ActivityCompat.requestPermissions(GuideActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, Constant.number.HUNDRED);
+                            ActivityCompat.requestPermissions(GuideActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_STATE}, Constant.number.HUNDRED);
                         }
                     }
                 }

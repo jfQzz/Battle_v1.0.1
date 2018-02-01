@@ -25,12 +25,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
         clearMemory();
     }
+
 
     //页面布局
     protected abstract int getLayoutId();

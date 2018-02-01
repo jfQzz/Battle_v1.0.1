@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,32 +8,15 @@
     tools:context="com.wangxia.battle.activity.TabWithPagerActivity">
 
     <include layout="@layout/actionbar" />
-
-    <com.androidkun.xtablayout.XTabLayout
-        android:id="@+id/xtab"
+    <ViewStub
+        android:id="@+id/vs_tab_and_vp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:xTabDividerColor="@color/colorLineSeparator"
-        app:xTabDividerGravity="center"
-        app:xTabDividerHeight="25dp"
-        app:xTabDividerWidth="1dp"
-        app:xTabDividerWidthWidthText="true"
-        app:xTabIndicatorColor="@color/colorAccent"
-        app:xTabIndicatorHeight="1dp"
-        app:xTabMode="scrollable"
-        app:xTabSelectedTextColor="@color/colorAccent"
-        app:xTabSelectedTextSize="15sp"
-        app:xTabTextColor="#666666"
-        app:xTabTextSize="15sp" />
+        android:layout_height="match_parent"
+        android:layout="@layout/tab_with_viewpager"/>
 
-    <View
-        android:id="@+id/line_separate"
+    <ViewStub
+        android:id="@+id/vs_fragment"
         android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="@color/colorLineSeparator" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout="@layout/fragment_contain" />
 </LinearLayout>

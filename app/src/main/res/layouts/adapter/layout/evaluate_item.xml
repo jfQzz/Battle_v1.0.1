@@ -6,7 +6,7 @@
     android:paddingTop="5dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/user_icon_img"
+        android:id="@+id/iv_user_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="7dp"
@@ -15,41 +15,36 @@
         fresco:actualImageScaleType="centerCrop"
         fresco:roundAsCircle="true" />
 
-    <!--用户名称-->
     <TextView
-        android:id="@+id/user_name_txt"
+        android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
-        android:layout_alignTop="@id/user_icon_img"
+        android:layout_alignTop="@id/iv_user_icon"
         android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/user_icon_img"
+        android:layout_toRightOf="@id/iv_user_icon"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:lines="1"
-        android:maxLines="12"
-        android:text="小小"
+        android:maxLength="12"
         android:textColor="@color/colorAccent"
         android:textSize="15sp" />
 
-    <!--用户性别-->
     <ImageView
-        android:id="@+id/user_sex"
+        android:id="@+id/tv_user_sex"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignTop="@id/user_name_txt"
+        android:layout_alignTop="@id/tv_user_name"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="2dp"
-        android:layout_toRightOf="@id/user_name_txt"
+        android:layout_toRightOf="@id/tv_user_name"
         android:padding="4sp"
         android:scaleType="centerInside"
         android:text="级的撒娇部分大吉" />
 
-    <!--等级-->
     <TextView
-        android:id="@+id/user_rank_txt"
+        android:id="@+id/tv_user_rank"
         android:layout_width="38dp"
         android:layout_height="16dp"
-        android:layout_alignLeft="@+id/user_icon_img"
+        android:layout_alignLeft="@+id/iv_user_icon"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="3dp"
         android:gravity="center_vertical|end"
@@ -61,57 +56,67 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/recently_play_game_ll"
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_nice"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/user_sex"
+        android:layout_alignTop="@id/tv_user_name"
+        android:layout_marginRight="3dp"
+        android:layout_toLeftOf="@+id/iv_replay"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="3dp"
-        android:paddingRight="10dp"
-        android:paddingTop="3dp"
-        android:visibility="gone">
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/iv_nice_ic"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:padding="2dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_nice"
+            android:tint="@color/colorTxtSub"
+            android:tintMode="multiply"/>
 
         <TextView
+            android:id="@+id/tv_nice_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TA在玩"
-            android:textColor="@color/colorTxtTitle"
-            android:textSize="10sp" />
+            android:ellipsize="end"
+            android:maxLength="4"
+            android:textSize="13sp" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/recently_play_game_ico"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="5dp"
-            fresco:roundBottomLeft="true"
-            fresco:roundBottomRight="true"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
-            fresco:roundedCornerRadius="2dp" />
     </LinearLayout>
 
-    <!--只显示机型-->
+    <ImageView
+        android:id="@+id/iv_replay"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/tv_user_name"
+        android:layout_marginRight="7dp"
+        android:padding="7dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_replay"
+        android:tint="@color/colorTxtSub"
+        android:tintMode="multiply"/>
+
+
     <TextView
-        android:id="@+id/user_comment_time_txt"
+        android:id="@+id/tv_user_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/user_icon_img"
-        android:layout_alignLeft="@id/user_name_txt"
+        android:layout_alignBottom="@id/iv_user_icon"
+        android:layout_alignLeft="@id/tv_user_name"
         android:ellipsize="end"
         android:lines="1"
-        android:text="iphone8"
         android:textColor="@color/colorTxtTitle"
         android:textSize="10.5sp" />
 
-    <!--评论-->
     <TextView
-        android:id="@+id/user_comment_txt"
+        android:id="@+id/tv_comment_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/user_name_txt"
-        android:layout_below="@id/user_icon_img"
+        android:layout_alignLeft="@id/tv_user_name"
+        android:layout_below="@id/iv_user_icon"
         android:layout_marginBottom="2dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="7dp"
@@ -120,90 +125,27 @@
         android:lineSpacingMultiplier="1.2"
         android:textColor="#a000"
         android:textSize="14sp" />
-    <!--显示评论时间,点赞等-->
-    <LinearLayout
-        android:id="@+id/user_answer_content"
+
+
+    <TextView
+        android:id="@+id/tv_comment_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/user_name_txt"
-        android:layout_below="@id/user_comment_txt"
+        android:layout_alignLeft="@id/tv_user_name"
+        android:layout_below="@id/tv_comment_desc"
         android:layout_marginBottom="4dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="6dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:textColor="#a000"
+        android:textSize="11sp" />
 
-        <TextView
-            android:id="@+id/tv_game_pinglun_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#a000"
-            android:textSize="11sp" />
-        <!--点赞和回复-->
-        <LinearLayout
-            android:id="@+id/user_support_replay_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/user_answer_img"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:padding="2dp"
-                android:scaleType="centerCrop" />
-
-            <TextView
-                android:id="@+id/user_answer_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginLeft="3dp"
-                android:gravity="center_vertical"
-                android:textSize="11sp" />
-
-            <RelativeLayout
-                android:id="@+id/user_support_linear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp">
-
-                <ImageView
-                    android:id="@+id/user_hits_img"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:padding="2.5dp"
-                    android:scaleType="centerCrop"
-                    android:translationY="-1.5dp" />
-
-                <TextView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:gravity="center_vertical"
-                    android:text="+1"
-                    android:textColor="#FF0000"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/user_hits_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_toRightOf="@+id/user_hits_img"
-                    android:gravity="center_vertical"
-                    android:textSize="11sp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
     <!--回复-->
     <com.wangxia.battle.view.CustomListView
-        android:id="@+id/user_answer_list_view"
+        android:id="@+id/lv_replay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/user_name_txt"
-        android:layout_below="@id/user_answer_content"
+        android:layout_alignLeft="@id/tv_user_name"
+        android:layout_below="@id/tv_comment_time"
         android:layout_marginBottom="3dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="3dp"
@@ -212,7 +154,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
-        android:layout_below="@id/user_answer_list_view"
+        android:layout_below="@id/lv_replay"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

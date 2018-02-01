@@ -4,28 +4,41 @@ apply plugin: 'android-apt'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+    useLibrary 'org.apache.http.legacy'
 
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    signingConfigs {
+        config {
+            storeFile file('D:/AppStore/battle/com.wangxia.battle.jks')
+            storePassword 'ZAB13370'
+            keyAlias 'meibaa'
+            keyPassword '2248683820'
+        }
+    }
+
     defaultConfig {
+        resConfigs "zh","en"
         applicationId "com.wangxia.battle"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.0"
+        //大1
+        versionCode 6
+        versionName "1.0.5"
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'
         }
-
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "4aead4158f728887e02e8e7e", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
+
 
     productFlavors {
         alibaba {}
@@ -35,17 +48,27 @@ android {
         hackhome {}
         tencent {}
         umeng {}
+        meizu{}
+        huawei{}
+        oppo{}
+        vivo{}
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
     }
 
+
     buildTypes {
         release {
+            signingConfig signingConfigs.config;
             shrinkResources true
             zipAlignEnabled true
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro','proguard.cfg'
+        }
+
+        debug{
+            signingConfig signingConfigs.config;
         }
     }
     sourceSets {
@@ -63,17 +86,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.facebook.fresco:fresco:1.5.0'
-    // 仅支持 WebP 静态图，需要添加
-    compile 'com.facebook.fresco:webpsupport:0.12.0'
+    //向下兼容2.3
+    //    compile 'com.facebook.fresco:webpsupport:0.12.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     apt 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.zhy:okhttputils:2.6.2'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
@@ -81,8 +105,17 @@ dependencies {
     compile 'com.bartoszlipinski.recyclerviewheader:library:1.2.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.androidkun:XTabLayout:1.1.3'
-    compile 'fm.jiecao:jiecaovideoplayer:5.5.2'
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.3'
+    compile 'top.zibin:Luban:1.1.3'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     compile 'cn.jiguang.sdk:jpush:3.0.3'
+    compile files('libs/open_sdk_r5886_lite.jar')
+    compile 'ren.yale.android:cachewebviewlib:1.3.3'
+    //微信登录
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    //微博登录
+    compile 'com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar'
+    //即时通讯
+    compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
 }

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorLineSeparator" />
+
+    <LinearLayout
+        android:id="@+id/ll_account"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/top_line"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="22dp"
+            android:src="@drawable/ico_phone" />
+
+        <EditText
+            android:id="@+id/edt_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@color/colorTransparent"
+            android:hint="@string/phone_number"
+            android:inputType="number"
+            android:maxLength="11"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_del_account"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/btn_del_normal"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/mid_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/ll_account"
+        android:background="@color/colorLineSeparator" />
+
+    <LinearLayout
+        android:id="@+id/ll_password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/mid_line"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/login_key" />
+
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:maxLength="16"
+            android:background="@color/colorTransparent"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_show_password"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_eye_close"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/ll_password"
+        android:background="@color/colorLineSeparator" />
+
+    <LinearLayout
+        android:id="@+id/ll_auth_code"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/bottom_line"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="15dp"
+            android:src="@drawable/login_mobile_msg" />
+
+        <EditText
+            android:id="@+id/edt_auth_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:maxLength="6"
+            android:background="@color/colorTransparent"
+            android:hint="@string/input_auth_code_hints"
+            android:inputType="number"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_get_auth_code"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/get_auth_code"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+    <View
+        android:id="@+id/end_line_two"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/ll_auth_code"
+        android:background="@color/colorLineSeparator" />
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/end_line_two"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/color_accent_radius_shape"
+        android:text="@string/register_now"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/tv_user_register_deal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_login"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.3"
+        android:padding="5dp"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>

@@ -27,4 +27,13 @@ public class BannerPresenter implements IPresenter,ICallback {
           iAppInfo.getResult(appInfo,type);
     }
 
+    @Override
+    public void error( ) {
+        iAppInfo.errorRequest();
+    }
+
+    @Override
+    public void fail() {
+        iAppInfo.failRequest();}
+
 }

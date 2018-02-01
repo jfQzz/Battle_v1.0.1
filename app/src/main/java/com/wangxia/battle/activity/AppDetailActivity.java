@@ -10,8 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +23,15 @@ import com.wangxia.battle.adapter.PagerAdapter;
 import com.wangxia.battle.callback.ISuccessCallbackData;
 import com.wangxia.battle.fragment.GameDetailFragment;
 import com.wangxia.battle.fragment.GameEvaluateFragment;
-import com.wangxia.battle.globe.App;
 import com.wangxia.battle.model.bean.AppInfo;
 import com.wangxia.battle.presenter.impPresenter.GameDetailPresenter;
 import com.wangxia.battle.util.Constant;
 import com.wangxia.battle.util.MyToast;
-import com.wangxia.battle.util.Mytime;
 import com.wangxia.battle.util.ShareUtil;
+import com.wangxia.battle.util.SpUtil;
+import com.wangxia.battle.util.StatusBarUtil;
 import com.wangxia.battle.util.TxtFormatUtil;
+import com.wangxia.battle.util.UserUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,22 +59,25 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
     TextView tvGameSize;
     @BindView(R.id.tv_game_label)
     TextView tvGameLabel;
-    @BindView(R.id.iv_favorite)
-    ImageView ivFavorite;
-    @BindView(R.id.tv_attention)
-    TextView tvAttention;
     @BindView(R.id.iv_download)
     ImageView ivDownload;
     @BindView(R.id.tab_layout)
     XTabLayout tabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-    @BindView(R.id.loading)
-    FrameLayout loading;
+    @BindView(R.id.ll_evaluate)
+    LinearLayout llEvaluate;
+    @BindView(R.id.ll_bottom_function)
+    LinearLayout llFunction;
+    @BindView(R.id.tv_comment_count)
+    TextView tvCommentCount;
+    @BindView(R.id.iv_user_ic)
+    SimpleDraweeView ivUser;
     private int mGameId;
     private GameDetailPresenter mGameDetailPresenter;
     private AppInfo mAppInfo;
-    private boolean mIsFavorite = false;
+    private GameEvaluateFragment mGameEvaluateFragment;
+    private boolean mIsNeedUserInfo;
 
     public static void startAppDetailActivity(Context context, int id) {
         Intent intent = new Intent(context, AppDetailActivity.class);
@@ -96,10 +100,16 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
         super.onResume();
         MobclickAgent.onPageStart("AppDetailActivity");
         MobclickAgent.onResume(this);
+        if(mIsNeedUserInfo && UserUtil.getUserState(this)){
+            String userIcon = SpUtil.getString(this, Constant.userInfo.USER_ICON, null);
+            if(!TextUtils.isEmpty(userIcon) && null != ivUser) ivUser.setImageURI(userIcon);
+            mIsNeedUserInfo = false;
+        }
     }
 
     @Override
     protected void initView() {
+        StatusBarUtil.setTransparentForImageView(this,null);
         iv_back.setVisibility(View.VISIBLE);
         ivActionRightThree.setVisibility(View.VISIBLE);
         ivActionRightOne.setVisibility(View.GONE);
@@ -110,19 +120,36 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
     @Override
     protected void initListener() {
         iv_back.setOnClickListener(this);
-        ivFavorite.setOnClickListener(this);
         ivDownload.setOnClickListener(this);
         ivActionRightThree.setOnClickListener(this);
+        llEvaluate.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(Constant.number.ZERO == position){
+                    llFunction.setVisibility(View.GONE);
+                }else {
+                    llFunction.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     protected void initData() {
+        ivUser.setImageURI(SpUtil.getString(this, Constant.userInfo.USER_ICON, null));
         mGameDetailPresenter = new GameDetailPresenter(this);
-        mGameDetailPresenter.queryList(mGameId, null,Constant.number.ZERO);
-        if (App.mReaderManager.isFavoriteAppById(mGameId)) {
-            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
-            mIsFavorite = true;
-        }
+        mGameDetailPresenter.queryList(mGameId, null, Constant.number.ZERO);
 
     }
 
@@ -139,24 +166,19 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
 
     @Override
     public void getResult(Object dataBean, int type) {
-        if (View.VISIBLE == loading.getVisibility()) {
-            loading.setVisibility(View.GONE);
-
-        }
         if (null != dataBean) {
             switch (type) {
                 case Constant.number.ZERO:
                     mAppInfo = (AppInfo) dataBean;
                     ivGameIco.setImageURI(mAppInfo.getIco());
                     tvGameTitle.setText(Html.fromHtml(mAppInfo.getAppName()));
-                    String size = TextUtils.isEmpty(mAppInfo.getSize()) ? String.valueOf(Constant.number.ZERO) : mAppInfo.getSize();
                     tvGameSize.setText(Html.fromHtml(mAppInfo.getCatalogName()).toString() + " | " + (Integer.parseInt(mAppInfo.getSize()) / 1024) + " M");
                     tvGameLabel.setText(TxtFormatUtil.HtmlFormat(mAppInfo.getRemarks()));
                     tvTitle.setText(TxtFormatUtil.HtmlFormat(mAppInfo.getAppName()));
-                    App.mReaderManager.addGameBrowseDB(mGameId, mAppInfo.getIco(), mAppInfo.getAppName(), Long.parseLong(size), mAppInfo.getLabels(), mAppInfo.getRemarks(), Mytime.getStringToday());
                     List<Fragment> fragmentList = new ArrayList<>(2);
                     fragmentList.add(GameDetailFragment.newInstance(mAppInfo));
-                    fragmentList.add(GameEvaluateFragment.newInstance(mGameId));
+                    mGameEvaluateFragment = GameEvaluateFragment.newInstance(mAppInfo.getID());
+                    fragmentList.add(mGameEvaluateFragment);
                     viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragmentList, getResources().getStringArray(R.array.game_detail_tabs)));
                     viewPager.setOffscreenPageLimit(2);
                     tabLayout.setupWithViewPager(viewPager);
@@ -171,29 +193,43 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
     }
 
     @Override
+    public void failRequest() {
+
+    }
+
+    @Override
+    public void errorRequest() {
+
+    }
+
+    @Override
     public void onClick(View v) {
-        String size = mAppInfo.getSize();
-        if (TextUtils.isEmpty(size)) {
-            size = String.valueOf(Constant.number.ZERO);
+        String size = String.valueOf("0");
+        if (null != mAppInfo) {
+            if (!TextUtils.isEmpty(mAppInfo.getSize())) {
+                size = mAppInfo.getSize();
+            }
         }
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_favorite:
-                if (mIsFavorite) {
-                    mIsFavorite = false;
-                    ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.no_favorite));
-                    App.mReaderManager.deleteFavoriteGameById(mGameId);
-                } else {
-                    App.mReaderManager.addGameFavoriteDB(mGameId, mAppInfo.getIco(), mAppInfo.getAppName(), Long.parseLong(size), mAppInfo.getLabels(), mAppInfo.getRemarks(), Mytime.getStringToday());
-                    mIsFavorite = true;
-                    ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
+            case R.id.ll_evaluate:
+                if(UserUtil.getUserState(this))
+                    mGameEvaluateFragment.evaluateGame();
+                else{
+                    Intent intent = new Intent(this, TabWithPagerActivity.class);
+                    intent.putExtra(Constant.string.ARG_ONE, Constant.number.EIGHT);
+                    intent.putExtra(Constant.string.ARG_TWO, Constant.userInfo.NEED_USER_INFO);
+                    this.startActivity(intent);
+                    mIsNeedUserInfo = true;
                 }
                 break;
             case R.id.iv_download:
+                if(null == mAppInfo){
+                    return;
+                }
                 //下载历史
-                App.mReaderManager.addDownHistoryDB(mGameId, mAppInfo.getIco(), mAppInfo.getAppTitle(), Long.parseLong(size), mAppInfo.getLabels(), mAppInfo.getRemarks(), Mytime.getStringToday());
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 intent.setData(Uri.parse(mAppInfo.getDown().get(Constant.number.ZERO).getUrl()));
@@ -213,6 +249,13 @@ public class AppDetailActivity extends BaseActivity implements ISuccessCallbackD
                 share();
                 break;
         }
+    }
+
+    public void setEvaluateCount(String count){
+        if(!TextUtils.isEmpty(count)){
+            tvCommentCount.setText(count);
+        }
+
     }
 
     private void share() {

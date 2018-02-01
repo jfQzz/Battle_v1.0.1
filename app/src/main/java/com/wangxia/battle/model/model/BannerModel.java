@@ -23,13 +23,17 @@ public class BannerModel implements IModel {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        call.cancel();
+                        e.printStackTrace();
+                        iCallback.error();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if(!TextUtils.isEmpty(response)){
                             iCallback.success(GsonUtil.getGson().fromJson(response, BannerBean.class),type);
+                        }else {
+                            iCallback.fail();
                         }
                     }
                 });

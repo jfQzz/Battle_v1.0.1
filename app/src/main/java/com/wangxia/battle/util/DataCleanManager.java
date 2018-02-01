@@ -119,7 +119,7 @@ public class DataCleanManager {
      */
     //Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
     //Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
-    public static long getFolderSize(File file){
+    public static long getFolderSize(File file) {
         long size = 0;
         try {
             File[] fileList = file.listFiles();
@@ -144,7 +144,7 @@ public class DataCleanManager {
      * @return
      */
     public static void deleteFolderFile(String filePath, boolean deleteThisPath) {
-        if (!TextUtils.isEmpty(filePath)) { //不为空目录
+        if (!TextUtils.isEmpty(filePath)) { //不为空
             try {
                 File file = new File(filePath);
                 if (file.isDirectory()) {// 如果下面还有文件
@@ -167,5 +167,18 @@ public class DataCleanManager {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    /**
+     * 删除某个文件下的文件，包含本身
+     * @param path
+     */
+    public static void cleanFile(String path) {
+        File file = new File(path);
+        if(file.exists()){
+            file.delete();
+        }
+        deleteFolderFile(path,true);
     }
 }

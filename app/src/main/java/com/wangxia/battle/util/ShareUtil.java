@@ -25,8 +25,8 @@ public class ShareUtil {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, desc);
-        intent.putExtra(Intent.EXTRA_TEXT, (title+ "查看链接➸ " + shareUrl));
-        weakContext.startActivity(Intent.createChooser(intent, "~分享到~"));
+        intent.putExtra(Intent.EXTRA_TEXT, ("决战平安京助手\n\n"+title+ "查看链接➸ " + shareUrl));
+        weakContext.startActivity(Intent.createChooser(intent, "分享到"));
     }
 
 }

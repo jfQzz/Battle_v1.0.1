@@ -1,32 +1,30 @@
 package com.wangxia.battle.fragment.list;
 
-import android.content.Context;
-import android.content.res.Resources;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wangxia.battle.R;
 import com.wangxia.battle.activity.WebViewActivity;
 import com.wangxia.battle.adapter.ArticleAdapter;
 import com.wangxia.battle.callback.ISuccessCallbackData;
-import com.wangxia.battle.fragment.BaseFragment;
+import com.wangxia.battle.fragment.base.LazyBaseFragment;
 import com.wangxia.battle.model.bean.ArticleList;
 import com.wangxia.battle.presenter.impPresenter.ArticleListPresenter;
 import com.wangxia.battle.util.Constant;
+import com.wangxia.battle.util.LogUtil;
 import com.wangxia.battle.util.MyToast;
-import com.wangxia.battle.util.OnLoadMoreListener;
+import com.wangxia.battle.util.NetUtil;
 import com.wangxia.battle.util.TxtFormatUtil;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,16 +36,12 @@ import butterknife.Unbinder;
  * Email:18772833900@163.com
  * Explain：
  */
-public class AppListFragment extends BaseFragment implements ISuccessCallbackData, OnLoadMoreListener.ILoadMoreListener {
+public class AppListFragment extends LazyBaseFragment implements ISuccessCallbackData<ArticleList> {
 
-    @BindView(R.id.list_view)
-    RecyclerView lv_home;
-    @BindView(R.id.loading)
-    FrameLayout loading_view;
+    @BindView(R.id.rl_view)
+    RecyclerView rlView;
     @BindView(R.id.refresh_Layout)
     SwipeRefreshLayout smartRefreshLayout;
-    private Context mContext;
-    private ArrayList<ArticleList.ItemsBean> mData = new ArrayList<>();
     private int mCurrentPage = 1;
     private boolean mIsRefresh = false;
     private Unbinder mBind;
@@ -56,13 +50,6 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
     private ArticleListPresenter mArticleListPresenter;
     private ArticleAdapter mArticleAdapter;
     private int mPageCount;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
 
     /**
@@ -98,16 +85,13 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
     public View initView() {
         View view = View.inflate(mContext, R.layout.fragment_app_list, null);
         mBind = ButterKnife.bind(this, view);
-        switch (mType){
+        smartRefreshLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorYellow,R.color.colorRad);
+        smartRefreshLayout.setRefreshing(true);
+        switch (mType) {
             case Constant.number.ZERO:
-                lv_home.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                mArticleAdapter = new ArticleAdapter(mContext,mData);
-                mArticleAdapter.setType(Constant.number.ONE);
-                Resources resources = getResources();
-                if(mLabel.equals(resources.getString(R.string.hero_list)) || mLabel.equals(resources.getString(R.string.arm_list))){
-                    mArticleAdapter.setPicWidth(60);
-                }
-                lv_home.setAdapter(mArticleAdapter);
+                rlView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                mArticleAdapter = new ArticleAdapter();
+                rlView.setAdapter(mArticleAdapter);
                 break;
         }
         return view;
@@ -115,11 +99,12 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
 
     @Override
     public void initData() {
-        switch (mType){
+        switch (mType) {
             case Constant.number.ZERO:
-                    mArticleListPresenter = new ArticleListPresenter(this);
-                    mLabel = TxtFormatUtil.myescape(mLabel);
-                    mArticleListPresenter.queryList(Constant.number.TWO, mLabel, mCurrentPage);
+                mArticleListPresenter = new ArticleListPresenter(this);
+                mLabel = TxtFormatUtil.myescape(mLabel);
+                mIsRefresh = true;
+                mArticleListPresenter.queryList(Constant.number.TWO, mLabel, mCurrentPage);
                 break;
         }
     }
@@ -127,27 +112,15 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
 
     @Override
     public void initListener() {
-        smartRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mCurrentPage = 1;
-                mIsRefresh = true;
-                switch (mType){
-                    case Constant.number.ZERO:
-                        mArticleListPresenter.queryList(Constant.number.TWO,mLabel, Constant.number.ONE);
-                        break;
-                }
-
-            }
-        });
-        lv_home.addOnScrollListener(new OnLoadMoreListener(this));
-        switch (mType){
+        smartRefreshLayout.setOnRefreshListener(new MyRefresh());
+        mArticleAdapter.setOnLoadMoreListener(new MyLoadMore(), rlView);
+        switch (mType) {
             case Constant.number.ZERO:
                 mArticleAdapter.setiItemClick(new ArticleAdapter.IItemClick() {
                     @Override
                     public void toArticleDetail(int position) {
-                        ArticleList.ItemsBean itemsBean = mData.get(position);
-                        WebViewActivity.toWebViewActivity(mContext, itemsBean.getID(), itemsBean.getTitle(), itemsBean.getPic(), Integer.parseInt(TextUtils.isEmpty(itemsBean.getHits()) ? String.valueOf(Constant.number.ZERO) : itemsBean.getHits()), itemsBean.getTime(), null, null);
+                        ArticleList.ItemsBean itemsBean = mArticleAdapter.getItem(position);
+                        WebViewActivity.toWebViewActivity(mContext, itemsBean.getID(), itemsBean.getTitle(), itemsBean.getDesc(), itemsBean.getPic(), Integer.parseInt(TextUtils.isEmpty(itemsBean.getHits()) ? String.valueOf(Constant.number.ZERO) : itemsBean.getHits()), itemsBean.getTime());
                     }
                 });
                 break;
@@ -167,28 +140,29 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
      * @param appInfo
      * @param type    100: banner
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public void getResult(Object appInfo, int type) {
-        if (mIsRefresh) {
+    public void getResult(ArticleList appInfo, int type) {
+        if (null == mContext || ((AppCompatActivity) mContext).isDestroyed()) {
+            return;
+        }
+        if (null != smartRefreshLayout&&smartRefreshLayout.isRefreshing()) {
             smartRefreshLayout.setRefreshing(false);
         }
-        loading_view.setVisibility(View.GONE);
         switch (type) {
-
             case Constant.number.TWO:
-                ArticleList articleList = (ArticleList) appInfo;
-                if(null != articleList){
+                ArticleList articleList = appInfo;
+                if (null != articleList) {
                     List<ArticleList.ItemsBean> items = articleList.getItems();
                     mCurrentPage = articleList.getCurpage();
                     mPageCount = articleList.getPagecount();
-                    if(null != items && Constant.number.ZERO < items.size()){
-                        if(mIsRefresh && null != mData){
-                            mData.clear();
-                            mIsRefresh = false;
-                        }
-                        mData.addAll(items);
-                        if(null != mArticleAdapter){
-                            mArticleAdapter.notifyDataSetChanged();
+                    if (null != items && Constant.number.ZERO < items.size()) {
+                        if (mIsRefresh) {
+                            mArticleAdapter.setNewData(items);
+                            mArticleAdapter.setEnableLoadMore(true);
+                        } else {
+                            mArticleAdapter.addData(items);
+                            mArticleAdapter.loadMoreComplete();
                         }
                     }
                 }
@@ -196,29 +170,78 @@ public class AppListFragment extends BaseFragment implements ISuccessCallbackDat
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public void loadMoreData() {
-        if (mCurrentPage < mPageCount) {
-            ++mCurrentPage;
-            switch (mType){
-                case Constant.number.ZERO:
-                    mArticleListPresenter.queryList(Constant.number.TWO,mLabel, mCurrentPage);
-                    break;
+    public void failRequest() {
+        if(null != mContext && !((AppCompatActivity) mContext).isDestroyed()){
+            if(smartRefreshLayout.isRefreshing()){
+                smartRefreshLayout.setRefreshing(false);
             }
-        } else {
-            MyToast.showToast(mContext, getResources().getString(R.string.no_more_data), Toast.LENGTH_SHORT);
+            if(mIsRefresh){
+                mArticleAdapter.setEnableLoadMore(true);
+            }else {
+                mArticleAdapter.loadMoreFail();
+            }
+
         }
     }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void errorRequest() {
+        if(null != mContext && !((AppCompatActivity) mContext).isDestroyed()) {
+            if (smartRefreshLayout.isRefreshing()) {
+                smartRefreshLayout.setRefreshing(false);
+            }
+            if (mIsRefresh) {
+                mArticleAdapter.setEnableLoadMore(true);
+            } else {
+                mArticleAdapter.loadMoreFail();
+            }
+                if (NetUtil.isNetAvailable(mContext))
+                    MyToast.s(mContext, getString(R.string.client_busy));
+                 else
+                    MyToast.s(mContext, getString(R.string.no_net));
+
+        }
+    }
+
 
     @Override
     public void recycleMemory() {
         mBind.unbind();
-        if (null != mData) {
-            mData.clear();
-        }
         mArticleAdapter = null;
-
-
     }
 
+
+    private class MyRefresh implements SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onRefresh() {
+            rlView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCurrentPage = 1;
+                    mIsRefresh = true;
+                    mArticleAdapter.setEnableLoadMore(false);
+                    mArticleListPresenter.queryList(Constant.number.TWO, mLabel, Constant.number.ONE);
+                }
+            }, 2000);
+        }
+    }
+
+    private class MyLoadMore implements com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener {
+        @Override
+        public void onLoadMoreRequested() {
+            LogUtil.i(mCurrentPage+"            "+mPageCount);
+                    if (mCurrentPage < mPageCount) {
+                        mIsRefresh = false;
+                        ++mCurrentPage;
+                        mArticleListPresenter.queryList(Constant.number.TWO, mLabel, mCurrentPage);
+                    } else {
+                        LogUtil.i("显示没有更多的数据啊~~~");
+                        mArticleAdapter.loadMoreEnd();
+                    }
+
+        }
+    }
 }

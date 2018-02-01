@@ -73,6 +73,23 @@ public class Mytime {
         return timeStr;
     }
 
+
+    /**
+     *
+     * @param day ：有效时间 ：天
+     * @param oldTime 上一个记录时间
+     * @return
+     */
+    public static boolean isDelay(int day,String oldTime) {
+        //当前时间
+        float mimits = getTwoDaysMimits(getStringToday(), oldTime);
+        if(60 * 24*day > mimits){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     //对于app列表里上传时间显示
     public static String showtheUploadTime(TextView mytext, String oldTime, String shangchan) {
         //当前时间

@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_user_icon"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/user_ico"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="15sp" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_user_icon"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    fresco:actualImageScaleType="centerCrop"
+                    fresco:placeholderImageScaleType="centerCrop"
+                    fresco:failureImage="@drawable/ic_user_icon_error"
+                    fresco:roundAsCircle="true"
+                    fresco:roundingBorderColor="@color/colorAccent"
+                    fresco:roundingBorderWidth="1dp"
+                    fresco:placeholderImage="@drawable/ic_user_icon_empty"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/user_id"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_user_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator" />
+
+            <LinearLayout
+                android:id="@+id/ll_user_nick"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/user_nick"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_user_nick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_nick"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/iv_editnick"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator" />
+
+            <LinearLayout
+                android:id="@+id/ll_user_gender"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/user_gender"
+                    android:textColor="@color/colorTxtTitle" />
+
+                <TextView
+                    android:id="@+id/tv_user_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_gender"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator" />
+
+            <LinearLayout
+                android:id="@+id/ll_user_safety"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/user_safety"
+                    android:textColor="@color/colorTxtTitle" />
+
+                <TextView
+                    android:id="@+id/tv_safe_sw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/show"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_user_safe_contain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+                <LinearLayout
+                    android:id="@+id/ll_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/phone_number"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_phone_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/no_bind"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="12sp"
+                        android:layout_marginRight="37dp"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_sina"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/user_sina"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="13sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_sina_nick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:text="@string/no_bind"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="12sp" />
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/iv_sina"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="centerCrop"
+                        fresco:actualImageScaleType="centerCrop"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        fresco:roundAsCircle="true" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+                <LinearLayout
+                    android:id="@+id/ll_wx"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/user_wx"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_wx_nick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:text="@string/no_bind"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="12sp" />
+
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/iv_wx"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="centerCrop"
+                        fresco:actualImageScaleType="centerCrop"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        fresco:roundAsCircle="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+                <LinearLayout
+                    android:id="@+id/ll_qq"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/user_qq"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_qq_nick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:text="@string/no_bind"
+                        android:textColor="@color/colorTxtTitle"
+                        android:textSize="12sp" />
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/iv_qq"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        fresco:roundAsCircle="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorLineSeparator" />
+
+                <TextView
+                    android:id="@+id/tv_exchange_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="@string/user_exchange_password"
+                    android:textColor="@color/colorTxtTitle"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator" />
+
+
+            <TextView
+                android:id="@+id/tv_user_login_time"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:text="最近登录时间"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorLineSeparator"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:id="@+id/tv_app_setting"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:text="@string/app_setting"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="15sp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_user_exit"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/color_accent_radius_shape"
+                android:text="退出登录"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_select_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/view_gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorTransparent" />
+
+        <TextView
+            android:id="@+id/tv_pic"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/color_white_slid_round_shape"
+            android:gravity="center"
+            android:text="@string/pic"
+            android:textColor="@color/colorTxtTitle"
+            android:textSize="17sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+
+        <TextView
+            android:id="@+id/tv_take_photo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/color_white_slid_round_shape"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:text="@string/take_photo"
+            android:textColor="@color/colorTxtTitle"
+            android:textSize="17sp"
+            android:layout_marginTop="7dp"/>
+
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/color_white_slid_round_shape"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/colorTxtTitle"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"/>
+    </LinearLayout>
+</FrameLayout>

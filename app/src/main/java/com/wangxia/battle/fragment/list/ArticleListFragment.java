@@ -1,31 +1,26 @@
 package com.wangxia.battle.fragment.list;
 
-import android.content.Context;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wangxia.battle.R;
 import com.wangxia.battle.activity.WebViewActivity;
 import com.wangxia.battle.adapter.ArticleAdapter;
-import com.wangxia.battle.adapter.FunctionTypeAdapter;
 import com.wangxia.battle.callback.ISuccessCallbackData;
-import com.wangxia.battle.fragment.BaseFragment;
+import com.wangxia.battle.callback.NetworkListener;
+import com.wangxia.battle.fragment.base.LazyBaseFragment;
 import com.wangxia.battle.model.bean.ArticleList;
 import com.wangxia.battle.presenter.impPresenter.ArticleListPresenter;
 import com.wangxia.battle.util.Constant;
-import com.wangxia.battle.util.MyToast;
-import com.wangxia.battle.util.OnLoadMoreListener;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
+import com.wangxia.battle.util.NetUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,30 +31,20 @@ import butterknife.Unbinder;
  * Email:18772833900@163.com
  * Explain：文章列表 0：默认的所有的决战平安京文章
  */
-public class ArticleListFragment extends BaseFragment implements ISuccessCallbackData, OnLoadMoreListener.ILoadMoreListener {
+public class ArticleListFragment extends LazyBaseFragment implements ISuccessCallbackData, NetworkListener {
     @BindView(R.id.smart_refresh)
     SwipeRefreshLayout smartRefreshLayout;
     @BindView(R.id.rl_view)
     RecyclerView rl_article;
-    private Context mContext;
-    private List<ArticleList.ItemsBean> mData = new ArrayList<>();
     private ArticleAdapter mArticleAdapter;
     private ArticleListPresenter mArticleListPresenter;
     private int mCurrentPage = 1;
     private int mPageCount;
     private Unbinder mBind;
-    private boolean mIsRefresh = false;
+    private boolean mIsRefresh = true;
     private int mType;
     private String mLabel;
-    private FunctionTypeAdapter mFunctionTypeAdapter;
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
     public static ArticleListFragment newInstance(int type, String label) {
         Bundle args = new Bundle();
@@ -68,6 +53,12 @@ public class ArticleListFragment extends BaseFragment implements ISuccessCallbac
         ArticleListFragment fragment = new ArticleListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) NetUtil.setNetListener(this);
     }
 
     @Override
@@ -82,16 +73,13 @@ public class ArticleListFragment extends BaseFragment implements ISuccessCallbac
     public View initView() {
         View view = View.inflate(mContext, R.layout.fragment_article_list, null);
         mBind = ButterKnife.bind(this, view);
-        if(Constant.number.SEVEN != mType && Constant.number.EIGHT != mType){
-            rl_article.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-            mArticleAdapter = new ArticleAdapter(mContext, mData);
-            rl_article.setAdapter(mArticleAdapter);
-        }else {
-            rl_article.setLayoutManager(new GridLayoutManager(mContext,Constant.number.FORE));
-            mFunctionTypeAdapter = new FunctionTypeAdapter(mContext,mData);
-//            rl_article.addItemDecoration(new RecycleItemDecortion.DividerGridItemDecoration(mContext));
-            rl_article.setAdapter(mFunctionTypeAdapter);
-        }
+        smartRefreshLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorYellow,R.color.colorRad);
+        smartRefreshLayout.setRefreshing(true);
+        rl_article.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        mArticleAdapter = new ArticleAdapter();
+        mArticleAdapter.disableLoadMoreIfNotFullPage(rl_article);
+        mArticleAdapter.setEnableLoadMore(false);
+        rl_article.setAdapter(mArticleAdapter);
         return view;
     }
 
@@ -103,49 +91,23 @@ public class ArticleListFragment extends BaseFragment implements ISuccessCallbac
 
     @Override
     public void initListener() {
-        if (null != smartRefreshLayout) {
-            smartRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    if(Constant.number.TEN > mData.size()){
-                        smartRefreshLayout.setRefreshing(false);
-                        return;
-                    }
-                    mCurrentPage = 1;
-                    mIsRefresh = true;
-                    mArticleListPresenter.queryList(mType, mLabel, mCurrentPage);
-                }
-            });
-        }
-        if (null != rl_article) {
-            rl_article.addOnScrollListener(new OnLoadMoreListener(this));
-        }
-        if (null != mArticleAdapter) {
-            mArticleAdapter.setiItemClick(new ArticleAdapter.IItemClick() {
-                @Override
-                public void toArticleDetail(int position) {
-                    MobclickAgent.onEvent(mContext, Constant.uMengStatistic.FIND_ARTICLE_HINTS);
-                    ArticleList.ItemsBean itemsBean = mData.get(position);
-                    WebViewActivity.toWebViewActivity(mContext, itemsBean.getID(), itemsBean.getSubtitle(), itemsBean.getPiclist(), Integer.parseInt(itemsBean.getHits()), itemsBean.getTime(), "大麦子", "小蘑菇");
-                }
-            });
-        }
-        if(null != mFunctionTypeAdapter){
-            mFunctionTypeAdapter.setItemClick(new FunctionTypeAdapter.IItemClickListener() {
-                @Override
-                public void itemClick(int position) {
-                    MobclickAgent.onEvent(mContext, Constant.uMengStatistic.FIND_ARTICLE_HINTS);
-                    ArticleList.ItemsBean itemsBean = mData.get(position);
-                    WebViewActivity.toWebViewActivity(mContext, itemsBean.getID(), itemsBean.getSubtitle(), itemsBean.getPiclist(), Integer.parseInt(itemsBean.getHits()), itemsBean.getTime(), "大麦子", "小蘑菇");
-                }
-            });
-        }
+        smartRefreshLayout.setOnRefreshListener(new MyRefresh());
+        mArticleAdapter.setOnLoadMoreListener(new MyLoadMore(), rl_article);
+        mArticleAdapter.setiItemClick(new ArticleAdapter.IItemClick() {
+            @Override
+            public void toArticleDetail(int position) {
+                MobclickAgent.onEvent(mContext, Constant.uMengStatistic.FIND_ARTICLE_HINTS);
+                ArticleList.ItemsBean itemsBean = mArticleAdapter.getItem(position);
+                WebViewActivity.toWebViewActivity(mContext, itemsBean.getID(), itemsBean.getSubtitle(), itemsBean.getDesc(), itemsBean.getPiclist(), Integer.parseInt(itemsBean.getHits()), itemsBean.getTime());
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("ArticleListFragment");
+        reLoad();
     }
 
     @Override
@@ -156,45 +118,118 @@ public class ArticleListFragment extends BaseFragment implements ISuccessCallbac
 
     @Override
     public void recycleMemory() {
-        if(null != mBind){
+        if (null != mBind) {
             mBind.unbind();
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void getResult(Object dataBen, int type) {
-        if (mIsRefresh) {
+        if (null == mContext || ((AppCompatActivity) mContext).isDestroyed()) {
+            return;
+        }
+        if (null != smartRefreshLayout && smartRefreshLayout.isRefreshing()) {
             smartRefreshLayout.setRefreshing(false);
         }
         if (null != dataBen) {
             ArticleList articleList = (ArticleList) dataBen;
             if (null != articleList && Constant.number.ZERO < articleList.getSize()) {
-                if (mIsRefresh && null != mData) {
-                    mData.clear();
-                    mIsRefresh = false;
-                }
                 mPageCount = articleList.getPagecount();
                 mCurrentPage = articleList.getCurpage();
-                mData.addAll(articleList.getItems());
-                if(Constant.number.SEVEN != mType && Constant.number.EIGHT != mType)
-                    mArticleAdapter.notifyDataSetChanged();
-                else mFunctionTypeAdapter.notifyDataSetChanged();
-
+                if (mIsRefresh) {
+                    mArticleAdapter.setNewData(articleList.getItems());
+                    mArticleAdapter.setEnableLoadMore(true);
+                } else {
+                    mArticleAdapter.addData(articleList.getItems());
+                    mArticleAdapter.loadMoreComplete();
+                }
             }
 
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public void loadMoreData() {
-        if(Constant.number.TEN > mData.size()){
+    public void failRequest() {
+        if (null == mContext || ((AppCompatActivity) mContext).isDestroyed()) {
             return;
         }
-        if (mCurrentPage < mPageCount) {
-            ++mCurrentPage;
+        if (smartRefreshLayout.isRefreshing())
+            smartRefreshLayout.setRefreshing(false);
+        mArticleAdapter.setEnableLoadMore(true);
+        if (null != mArticleAdapter && mArticleAdapter.isLoading()) mArticleAdapter.loadMoreFail();
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void errorRequest() {
+        if (null == mContext || ((AppCompatActivity) mContext).isDestroyed()) {
+            return;
+        }
+        if (mIsRefresh) {
+            smartRefreshLayout.setRefreshing(false);
+            mArticleAdapter.setEnableLoadMore(true);
+        } else
+            mArticleAdapter.loadMoreFail();
+    }
+
+    @Override
+    public void changeToMobile() {
+        reLoad();
+
+    }
+
+
+    @Override
+    public void changeToWifi() {
+        reLoad();
+
+    }
+
+    @Override
+    public void noNet() {
+        if (null != smartRefreshLayout && smartRefreshLayout.isRefreshing())
+            smartRefreshLayout.setRefreshing(false);
+        mArticleAdapter.setEnableLoadMore(true);
+        if (null != mArticleAdapter && mArticleAdapter.isLoading()) mArticleAdapter.loadMoreFail();
+
+    }
+
+    private void reLoad() {
+        if (null != mArticleAdapter && mArticleAdapter.getData().isEmpty() && null != mArticleListPresenter) {
+            mIsRefresh = true;
             mArticleListPresenter.queryList(mType, mLabel, mCurrentPage);
-        } else {
-            MyToast.showToast(mContext, "没有更多的数据啦 !", Toast.LENGTH_SHORT);
+        }
+    }
+
+    private class MyRefresh implements SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onRefresh() {
+            rl_article.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCurrentPage = 1;
+                    mIsRefresh = true;
+                    mArticleAdapter.setEnableLoadMore(false);
+                    mArticleListPresenter.queryList(mType, mLabel, mCurrentPage);
+                }
+            }, 2000);
+
+        }
+    }
+
+    private class MyLoadMore implements com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener {
+        @Override
+        public void onLoadMoreRequested() {
+            if (mCurrentPage < mPageCount) {
+                mIsRefresh = false;
+                ++mCurrentPage;
+                mArticleListPresenter.queryList(mType, mLabel, mCurrentPage);
+            } else {
+                mArticleAdapter.loadMoreEnd();
+            }
         }
     }
 }

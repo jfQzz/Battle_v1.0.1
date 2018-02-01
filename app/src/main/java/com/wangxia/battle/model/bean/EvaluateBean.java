@@ -114,6 +114,7 @@ public class EvaluateBean {
         private String User;
         private String UserID;
         private String UserPic;
+        private String Icon;
         private String UserType;
         private String UserCrad;
         private String UserSing;
@@ -129,6 +130,7 @@ public class EvaluateBean {
         private String PalyMinute;
         private UserAppBean UserApp;
         private List<ReBean> Re;
+        private boolean isDig;
 
         public int getID() {
             return ID;
@@ -176,6 +178,14 @@ public class EvaluateBean {
 
         public void setUserPic(String UserPic) {
             this.UserPic = UserPic;
+        }
+
+        public String getIcon() {
+            return Icon;
+        }
+
+        public void setIcon(String icon) {
+            Icon = icon;
         }
 
         public String getUserType() {
@@ -288,6 +298,14 @@ public class EvaluateBean {
 
         public void setUserApp(UserAppBean UserApp) {
             this.UserApp = UserApp;
+        }
+
+        public boolean isDig() {
+            return isDig;
+        }
+
+        public void setDig(boolean dig) {
+            isDig = dig;
         }
 
         public List<ReBean> getRe() {

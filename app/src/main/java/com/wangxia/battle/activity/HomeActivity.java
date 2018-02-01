@@ -1,15 +1,22 @@
 package com.wangxia.battle.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -46,8 +53,10 @@ import com.wangxia.battle.util.Constant;
 import com.wangxia.battle.util.DataCleanManager;
 import com.wangxia.battle.util.LogUtil;
 import com.wangxia.battle.util.MyToast;
+import com.wangxia.battle.util.NetUtil;
 import com.wangxia.battle.util.OkHttpDownloadUtil;
 import com.wangxia.battle.util.SpUtil;
+import com.wangxia.battle.util.StatusBarUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,13 +64,19 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener, ISuccessCallbackData {
+public class HomeActivity extends BaseActivity implements View.OnClickListener, ISuccessCallbackData, NetUtil.IUniversalDialogCallback {
     @BindView(R.id.appbar)
     AppBarLayout appBarLayout;
+    @BindView(R.id.coordinator_ly)
+    CoordinatorLayout coordinatorLy;
     @BindView(R.id.view_pager)
     ViewPager vp_contain;
+    @BindView(R.id.ll_action_bar)
+    LinearLayout llActionBar;
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.iv_tree)
+    ImageView iv_tree;
     @BindView(R.id.ll_bottom_menu)
     LinearLayout ll_bottom_menu;
     @BindView(R.id.ll_home)
@@ -90,6 +105,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private AppInstallReceiver mApkInstallListener;
     private AlertDialog mUpdateDialog;
     private AppUpdateBean updateBean;
+    private int mCurrentPage;
+    private IntentFilter mIntentFilter;
+    private NetworkChangeReceiver mNetworkChangeReceiver;
+    private MineFragment mMineFragment;
 
 
     @Override
@@ -97,28 +116,64 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         return R.layout.activity_home;
     }
 
+    public static void toHome(Context context, int pageIndex) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.putExtra(Constant.string.ARG_ONE, pageIndex);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void initView() {
+        StatusBarUtil.setTransparentForImageView(this, null);
         mBottomLinear.add(ll_home);
         mBottomLinear.add(ll_rank);
         mBottomLinear.add(ll_find);
         mBottomLinear.add(ll_attention);
         mBottomLinear.add(ll_my_game);
         setCurrentFragment(Constant.number.ZERO);
-        registerApkInstalListener();
+        registerApkInstallListener();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mCurrentPage = intent.getIntExtra(Constant.string.ARG_ONE, Constant.number.ZERO);
+    }
 
     @Override
     protected void onResume() {
         //用versionCode和最新的对比,若相等更新成功，反之显示更新
-        if (TextUtils.equals(ApkUtil.getVerName(this), SpUtil.getString(this, Constant.string.SP_SERVER_APK_VERSION, null))) {
-            if (null != mUpdateDialog) {
+
+        if (null != mUpdateDialog) {
+            if (TextUtils.equals(ApkUtil.getVerName(this), SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, null))) {
                 mUpdateDialog.dismiss();
+            } else {
+                mIsUpdateComplete = false;
+                mBtnUpdate.setText(getResources().getString(R.string.update_now));
+                //如果本地安装包不在了应该下载
+                File file = new File(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME);
+                if (file.exists()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        //检查是否拥有权限
+                        ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, Constant.number.HUNDRED_AND_ONE);
+                    } else {
+                        LogUtil.i("       " + SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, updateBean.getVer()) + "    --    " + updateBean.getVer() + "       " + SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) + "        " + file.length());
+                        if (TextUtils.equals(SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, null), updateBean.getVer()) && SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) == file.length()) {
+                            mIsUpdateComplete = true;
+                            mBtnUpdate.setText(getResources().getString(R.string.install_now));
+                        }
+                    }
+                }
             }
         }
+        appBarLayout.setExpanded(true);
         super.onResume();
         MobclickAgent.onResume(this);
+        if (Constant.number.ZERO != mCurrentPage) {
+            if (null != vp_contain) {
+                vp_contain.setCurrentItem(mCurrentPage);
+            }
+        }
     }
 
     @Override
@@ -133,9 +188,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 //                startActivity(startIntent);
                 MyToast.showToast(this, getResources().getString(R.string.exit_battle), Toast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();
+                clearCache();
             } else {
                 MobclickAgent.onKillProcess(this);
-                clearCache();
                 finish();
                 System.exit(Constant.number.ZERO);
             }
@@ -173,6 +228,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    private void listenInNetChange() {
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        mNetworkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(mNetworkChangeReceiver, mIntentFilter);
+    }
+
     private void setCurrentFragment(int position) {
         for (int i = 0, count = mBottomLinear.size(); i < count; i++) {
             vp_contain.setCurrentItem(i);
@@ -192,12 +254,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initListener() {
+        listenInNetChange();
         ll_home.setOnClickListener(this);
         ll_rank.setOnClickListener(this);
         ll_find.setOnClickListener(this);
         ll_attention.setOnClickListener(this);
         ll_my_game.setOnClickListener(this);
         iv_user_ico.setOnClickListener(this);
+        iv_tree.setOnClickListener(this);
 
         vp_contain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -221,7 +285,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 int offset = appBarLayout.getHeight() + verticalOffset;
-                if(0 <= offset){
+                if (0 <= offset) {
                     ll_bottom_menu.getLayoutParams().height = offset;
                     ll_bottom_menu.requestLayout();
                 }
@@ -298,14 +362,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         mFragmentData.add(HomeFragment.newInstance(Constant.number.ZERO));
         mFragmentData.add(RankFragment.newInstance());
         mFragmentData.add(ArticleListFragment.newInstance(Constant.number.ZERO, null));
-        // 视频列表
-//        mFragmentData.add(VideoListFragment.newInstance());
-        mFragmentData.add(MineFragment.newInstance());
+        mMineFragment = MineFragment.newInstance();
+        mFragmentData.add(mMineFragment);
         vp_contain.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragmentData));
         vp_contain.setOffscreenPageLimit(Constant.number.FORE);
         mAppUpdatePresenter = new AppUpdatePresenter(this);
         mAppUpdatePresenter.queryList(Constant.number.ZERO, null, Constant.number.ZERO);
-
+        //针对1.0.6以前的版本(不包含1.0.6),删除如果存在的本地安装包   更新成功删除本地安装包
+        if (checkVersionName(ApkUtil.getVerName(this), "1.0.6") || TextUtils.equals(ApkUtil.getVerName(this), SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, null))) {
+            DataCleanManager.cleanFile(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME);
+            SpUtil.putString(this, Constant.string.DOWNLOAD_APK_VERSION, null);
+        }
     }
 
 
@@ -319,6 +386,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void clearMemory() {
         if (null != mApkInstallListener) {
             unregisterReceiver(mApkInstallListener);
+        }
+        if (null != mNetworkChangeReceiver) {
+            unregisterReceiver(mNetworkChangeReceiver);
         }
     }
 
@@ -343,6 +413,27 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.iv_user_ico:
 
                 break;
+            case R.id.iv_tree:
+                addQQGroup();
+                break;
+        }
+    }
+
+    /**
+     * 添加决战平安京交流群
+     */
+    private void addQQGroup() {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "ZxasxSH7FwHTJEQ0XT-uOsH1DSuuOeYk"));
+        PackageManager pm = this.getPackageManager();
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
+        if (resolveInfos.size() == 0) {
+            MyToast.showToast(this, "您的手机暂未安装QQ", Toast.LENGTH_SHORT);
+            return;
+        } else {
+            //开启一个新的栈
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 
@@ -360,7 +451,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         tvAppVersion.setText(String.valueOf(updateBean.getVer() + " V"));
         tvAppSize.setText(updateBean.getSize());
         tvAppLog.setText(updateBean.getDesc());
-        LogUtil.i(updateBean.toString());
         mBtnUpdate = (Button) view.findViewById(R.id.btn_update);
         mProgressAppUpdate = (ProgressBar) view.findViewById(R.id.progress_app_update);
         TextView tvExit = (TextView) view.findViewById(R.id.tv_exit);
@@ -371,22 +461,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         window.setGravity(Gravity.CENTER_HORIZONTAL);
         window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
         mUpdateDialog.show();
-        File file = new File(Constant.string.DOWNLOAD_PATH);
+        File file = new File(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME);
         if (file.exists()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 //检查是否拥有权限
                 ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, Constant.number.HUNDRED_AND_ONE);
             } else {
-                File[] files = file.listFiles();
-                if (null != files) {
-                    for (int i = 0, count = files.length; i < count; i++) {
-                        String apkName = files[i].getName();
-                        if (TextUtils.equals(apkName, SpUtil.getString(this, Constant.string.UPDATE_APP_NAME, Constant.string.DEFAULT_APP_NAME)) && SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) == files[i].length()) {
-                            mIsUpdateComplete = true;
-                            mBtnUpdate.setText(getResources().getString(R.string.install_now));
-                        }
-                    }
+                LogUtil.i(SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, updateBean.getVer()) + "    --    " + updateBean.getVer() + "       " + SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) + "        " + file.length());
+                if (TextUtils.equals(SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, null), updateBean.getVer()) && SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) == file.length()) {
+                    mIsUpdateComplete = true;
+                    mBtnUpdate.setText(getResources().getString(R.string.install_now));
                 }
+
             }
         }
         mBtnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -395,12 +481,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                 if (mIsUpdateComplete) {
                     MobclickAgent.onEvent(HomeActivity.this, Constant.uMengStatistic.NEW_VERSION_INSTALL_PASSIVE);
                     //app安装
-                    ApkUtil.installApk(HomeActivity.this, String.valueOf(Constant.string.DOWNLOAD_PATH + File.separator + Constant.string.DEFAULT_APP_NAME));
+                    ApkUtil.installApk(HomeActivity.this, String.valueOf(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME));
                 } else {
                     MobclickAgent.onEvent(HomeActivity.this, Constant.uMengStatistic.NEW_VERSION_UPDATE);
                     v.setVisibility(View.GONE);
                     //执行下载，更新进度条，下载完成自动安装
-                    downloadNewApp(updateBean.getDown());
+                    downloadNewApp(updateBean.getDown(), updateBean.getVer());
                 }
             }
         });
@@ -430,6 +516,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void failRequest() {
+
+    }
+
+    @Override
+    public void errorRequest() {
+
+    }
+
     /**
      * 检测app是否需要更新
      */
@@ -439,7 +535,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         if (!TextUtils.isEmpty(localVersion) && !TextUtils.isEmpty(updateBean.getVer()) && !TextUtils.equals(localVersion, updateBean.getVer()) &&
                 !TextUtils.isEmpty(updateBean.getDown()) && !TextUtils.isEmpty(updateBean.getDesc()) && !TextUtils.isEmpty(updateBean.getSize())) {
             //弹出升级提示框
-            if (newVersion(localVersion, updateBean.getVer())) checkStoragePermission();
+            if (checkVersionName(localVersion, updateBean.getVer())) checkStoragePermission();
         }
     }
 
@@ -456,30 +552,29 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
+            //磁盘写入权限成功，更新app，反之失败退出
             case Constant.number.HUNDRED:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     updateApp(updateBean);
                 } else {
-                    return;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    return;
                 }
                 break;
+            // 磁盘读取权限成功，读取磁盘是否下载有新的安装包，若有修改升级按钮文字
             case Constant.number.HUNDRED_AND_ONE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    File file = new File(Constant.string.DOWNLOAD_PATH);
-                    File[] files = file.listFiles();
-                    if (null != files) {
-                        for (int i = 0, count = files.length; i < count; i++) {
-                            String apkName = files[i].getName();
-                            if (TextUtils.equals(apkName, SpUtil.getString(this, Constant.string.UPDATE_APP_NAME, Constant.string.DEFAULT_APP_NAME)) && SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) == files[i].length()) {
-                                mIsUpdateComplete = true;
-                                mBtnUpdate.setText(getResources().getString(R.string.install_now));
-                            }
-                        }
+                    mIsUpdateComplete = false;
+                    mBtnUpdate.setText(getResources().getString(R.string.update_now));
+                    File file = new File(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME);
+                    if (TextUtils.equals(SpUtil.getString(this, Constant.string.DOWNLOAD_APK_VERSION, null), updateBean.getVer()) && SpUtil.getLong(this, Constant.string.DOWNLOAD_APK_SIZE + Constant.string.DEFAULT_APP_NAME, Constant.number.ZERO) == file.length()) {
+                        mIsUpdateComplete = true;
+                        mBtnUpdate.setText(getResources().getString(R.string.install_now));
                     }
+
                 }
                 break;
         }
@@ -491,8 +586,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
      * 对传入的服务器版本号和本地版本号进行细致的分析,避免服务器缓存的问题
      * 1.0.1   1.0.2  分成3段,依次判断即可
      */
-    private boolean newVersion(String localVersion, String serviceVersion) {
-        SpUtil.getString(this, Constant.string.SP_SERVER_APK_VERSION, serviceVersion);
+    private boolean checkVersionName(String localVersion, String serviceVersion) {
         String[] localVersionArray = new String[0];
         String[] serverVersionArray = new String[0];
         try {
@@ -544,8 +638,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
      *
      * @param downUrl
      */
-    private void downloadNewApp(String downUrl) {
-        new OkHttpDownloadUtil().get().download(downUrl, Constant.string.DOWNLOAD_PATH, Constant.string.DEFAULT_APP_NAME, new OkHttpDownloadUtil.OnDownloadListener() {
+    private void downloadNewApp(String downUrl, final String version) {
+        OkHttpDownloadUtil.download(downUrl, Constant.string.DOWNLOAD_APK_PATH, Constant.string.DEFAULT_APP_NAME, new OkHttpDownloadUtil.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
                 runOnUiThread(new Thread(new Runnable() {
@@ -555,8 +649,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                         mProgressAppUpdate.setVisibility(View.GONE);
                         mBtnUpdate.setVisibility(View.VISIBLE);
                         mBtnUpdate.setText(getResources().getString(R.string.install_now));
+                        SpUtil.putString(HomeActivity.this, Constant.string.DOWNLOAD_APK_VERSION, version);
                         MobclickAgent.onEvent(HomeActivity.this, Constant.uMengStatistic.NEW_VERSION_INSTALL_AUTOMATION);
-                        ApkUtil.installApk(HomeActivity.this, String.valueOf(Constant.string.DOWNLOAD_PATH + File.separator + Constant.string.DEFAULT_APP_NAME));
+                        ApkUtil.installApk(HomeActivity.this, String.valueOf(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME));
                     }
                 }));
             }
@@ -569,7 +664,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onDownloadFailed(Exception e) {
                 //清除缓存，退出app，进入再次操作
-                DataCleanManager.deleteFolderFile(Constant.string.DOWNLOAD_PATH, true);
+                DataCleanManager.cleanFile(Constant.string.DOWNLOAD_APK_PATH + File.separator + Constant.string.DEFAULT_APP_NAME);
                 MobclickAgent.onKillProcess(HomeActivity.this);
                 finish();
                 System.exit(Constant.number.ZERO);
@@ -577,8 +672,47 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         });
     }
 
+    @Override
+    public void cancel() {
+
+    }
+
+    @Override
+    public void confirm() {
+        NetUtil.toSetNet(this);
+
+    }
+
+    class NetworkChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                switch (networkInfo.getType()) {
+                    case ConnectivityManager.TYPE_MOBILE:
+                        NetUtil.dismissUniversalDialog();
+                        mMineFragment.changeToMobile();
+                        if (null != NetUtil.networkListener)
+                            NetUtil.networkListener.changeToMobile();
+                        break;
+                    case ConnectivityManager.TYPE_WIFI:
+                        NetUtil.dismissUniversalDialog();
+                        mMineFragment.changeToWifi();
+                        if (null != NetUtil.networkListener) NetUtil.networkListener.changeToWifi();
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                NetUtil.universalDialog(HomeActivity.this, getString(R.string.dialog_hint), getString(R.string.no_net_hint), null, getString(R.string.to_set), HomeActivity.this);
+                if (null != NetUtil.networkListener) NetUtil.networkListener.noNet();
+            }
+        }
+    }
+
     // 动态注册apk安装监听器
-    private void registerApkInstalListener() {
+    private void registerApkInstallListener() {
         mApkInstallListener = new AppInstallReceiver();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);
         intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED); //添加
@@ -587,5 +721,4 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         intentFilter.addDataScheme("package");
         registerReceiver(mApkInstallListener, intentFilter);
     }
-
 }

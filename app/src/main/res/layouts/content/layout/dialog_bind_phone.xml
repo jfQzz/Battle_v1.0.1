@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:text="绑定手机号" />
+
+    <EditText
+        android:id="@+id/edt_phone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorTransparent"
+        android:hint="大大,请输入您的手机号"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="12sp"
+        android:inputType="number"
+        android:maxLength="11"/>
+
+    <LinearLayout
+        android:id="@+id/ll_code_contain"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/edt_auth_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorTransparent"
+            android:hint="大大,请输入验证码"
+            android:textColorHint="@color/colorAccent"
+            android:textSize="12sp"
+            android:inputType="number"
+            android:maxLength="6"/>
+
+        <TextView
+            android:id="@+id/tv_get_auth_code"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="7dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/get_auth_code"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_bind_phone"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/sure"
+        android:textColor="@color/colorAccent"
+        android:background="@drawable/color_accent_frame_radius_shape"/>
+
+
+</LinearLayout>

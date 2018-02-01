@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 import com.wangxia.battle.callback.ISuccessCallbackData;
 import com.wangxia.battle.db.bean.ArticleBean;
-import com.wangxia.battle.db.bean.GameBean;
+import com.wangxia.battle.db.bean.VideoBean;
 import com.wangxia.battle.globe.App;
 import com.wangxia.battle.model.IModel;
 import com.wangxia.battle.presenter.callback.ICallback;
@@ -30,32 +30,32 @@ public class LocalAppMode implements IModel {
                     public void getResult(Object dataBen, int type) {
                         iCallback.success(dataBen,type);
                     }
+
+                    @Override
+                    public void failRequest() {
+                        iCallback.fail();
+                    }
+
+                    @Override
+                    public void errorRequest() {
+                        iCallback.error();
+
+                    }
                 });
                 break;
             case Constant.number.ONE:
-                new AsyncTask<String, Integer, List<GameBean>>() {
-                    @Override
-                    protected List<GameBean> doInBackground(String... params) {
-                        return App.mReaderManager.getDownHistroy();
-                    }
-
-                    @Override
-                    protected void onPostExecute(List<GameBean> downListBeen) {
-                        iCallback.success(downListBeen, type);
-                    }
-                }.execute();
 
                 break;
             case Constant.number.TWO:
-                new AsyncTask<String, Integer, List<GameBean>>() {
+                new AsyncTask<String, Integer, List<VideoBean>>() {
                     @Override
-                    protected List<GameBean> doInBackground(String... params) {
-                        return App.mReaderManager.getGameBrowse();
+                    protected List<VideoBean> doInBackground(String... params) {
+                        return App.mReaderManager.getVideoBrowse();
                     }
 
                     @Override
-                    protected void onPostExecute(List<GameBean> gameBrowseBeen) {
-                        iCallback.success(gameBrowseBeen, type);
+                    protected void onPostExecute(List<VideoBean> videoBrowseBeen) {
+                        iCallback.success(videoBrowseBeen, type);
                     }
                 }.execute();
 
@@ -75,15 +75,15 @@ public class LocalAppMode implements IModel {
 
                 break;
             case Constant.number.FORE:
-                new AsyncTask<String, Integer, List<GameBean>>() {
+                new AsyncTask<String, Integer, List<VideoBean>>() {
                     @Override
-                    protected List<GameBean> doInBackground(String... params) {
-                        return App.mReaderManager.getGameFavorite();
+                    protected List<VideoBean> doInBackground(String... params) {
+                        return App.mReaderManager.getVideoFavorite();
                     }
 
                     @Override
-                    protected void onPostExecute(List<GameBean> gameFavoriteBeen) {
-                        iCallback.success(gameFavoriteBeen, type);
+                    protected void onPostExecute(List<VideoBean> videoFavoriteBeen) {
+                        iCallback.success(videoFavoriteBeen, type);
                     }
                 }.execute();
                 break;

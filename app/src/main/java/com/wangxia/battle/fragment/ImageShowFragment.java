@@ -1,6 +1,5 @@
 package com.wangxia.battle.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -13,9 +12,9 @@ import android.widget.TextView;
 
 import com.wangxia.battle.R;
 import com.wangxia.battle.adapter.ImgViewPagerAdapter;
+import com.wangxia.battle.fragment.base.BaseFragment;
 import com.wangxia.battle.util.Constant;
 
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 /**
@@ -26,7 +25,6 @@ import java.util.Arrays;
 public class ImageShowFragment extends BaseFragment {
 
     private String[] mData;
-    private Context mContext;
     private ViewPager viewPager;
     private ImgViewPagerAdapter mBigImgAdapter;
     private TextView tvImgIndex;
@@ -49,12 +47,6 @@ public class ImageShowFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

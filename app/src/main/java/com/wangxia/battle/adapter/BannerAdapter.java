@@ -1,6 +1,7 @@
 package com.wangxia.battle.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,7 +26,9 @@ public class BannerAdapter implements CBViewHolderCreator<BannerAdapter.Holder> 
         @Override
         public View createView(Context context) {
             imageView = new SimpleDraweeView(context);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setDrawingCacheEnabled(true);
+            imageView.setDrawingCacheBackgroundColor(Color.parseColor("#14b9c8"));
             return imageView;
         }
 

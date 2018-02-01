@@ -3,6 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorTransparent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="MdStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -20,7 +27,7 @@
     //冷启动init界面的主题
     <style name="ColdBootTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 欢迎页背景,注意:有导航栏的手机会直接占用导航栏,splash不设置成相同主题,则会缩放 -->
-        <item name="android:windowBackground">@drawable/bg_start</item>
+        <item name="android:windowBackground">@drawable/ic_start_bg</item>
         <item name="android:windowFullscreen">true</item>
         <!-- <item name="android:windowIsTranslucent">true</item> --> <!-- 透明背景不要了 -->
     </style>
@@ -52,5 +59,12 @@
         <item name="android:minHeight">10dip</item>
         <item name="android:maxHeight">10dip</item>
     </style>
+
+    <style name="BottomDialog" parent="@style/AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 
 </resources>

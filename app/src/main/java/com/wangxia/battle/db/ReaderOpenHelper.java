@@ -20,23 +20,19 @@ public class ReaderOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Constant.string.CREATE_DOWNLOAD_HISTORY);
-        db.execSQL(Constant.string.CREATE_DOWNLOAD_MANAGER);
-        db.execSQL(Constant.string.CREATE_GAME_BROWSE);
         db.execSQL(Constant.string.CREATE_ARTICLE_BROWSE);
-        db.execSQL(Constant.string.CREATE_GAME_FAVORITE);
         db.execSQL(Constant.string.CREATE_ARTICLE_FAVORITE);
+        db.execSQL(Constant.string.CREATE_VIDEO_BROWSE);
+        db.execSQL(Constant.string.CREATE_VIDEO_FAVORITE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion < newVersion){
-            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_DOWN_HISTORY);
-            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_DOWN_MANAGER);
-            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_GAME_BROWSE);
             db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_ARTICLE_BROWSE);
-            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_GAME_FAVORITE);
             db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_ARTICLE_FAVORITE);
+            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_VIDEO_BROWSE);
+            db.execSQL(Constant.string.DROP_TABLE + Constant.string.DB_VIDEO_FAVORITE);
             onCreate(db);
         }
     }

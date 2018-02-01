@@ -16,9 +16,9 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 import com.wangxia.battle.R;
+import com.wangxia.battle.fragment.base.LazyBaseFragment;
 import com.wangxia.battle.util.MyToast;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +30,7 @@ import butterknife.Unbinder;
  * Email:18772833900@163.com
  * Explain：
  */
-public class AboutUsFragment extends BaseFragment implements View.OnClickListener {
+public class AboutUsFragment extends LazyBaseFragment implements View.OnClickListener {
 
     @BindView(R.id.about_us_mipmap_img)
     SimpleDraweeView aboutUsMipmapImg;
@@ -49,7 +49,6 @@ public class AboutUsFragment extends BaseFragment implements View.OnClickListene
     @BindView(R.id.about_us_introduce_txt)
     TextView aboutUsIntroduceTxt;
     Unbinder unbinder;
-    private Context mContext;
     private Unbinder mBind;
 
     public static AboutUsFragment newInstance() {
@@ -59,12 +58,6 @@ public class AboutUsFragment extends BaseFragment implements View.OnClickListene
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        WeakReference<Context> weakReference = new WeakReference<>(context);
-        mContext = weakReference.get();
-    }
 
     @Override
     public View initView() {
@@ -76,8 +69,8 @@ public class AboutUsFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void initData() {
         aboutUsMipmapImg.setImageResource(R.mipmap.ic_launcher);
-        aboutUsWxTxt.setText("微信公众号: wxsybapp");
-        aboutUsQqqunTxt.setText("官方QQ群: 65021784");
+        aboutUsWxTxt.setText("微信公众号: jzpaj520");
+        aboutUsQqqunTxt.setText("官方QQ群: 597341641");
         aboutUsPhoneNetTxt.setText("手机访问: http://m.hackhome.com");
         aboutUsPcNetTxt.setText("电脑访问: http://www.hackhome.com");
         aboutUsEmailTxt.setText("联系邮箱: 2659359106@qq.com");
@@ -126,27 +119,20 @@ public class AboutUsFragment extends BaseFragment implements View.OnClickListene
                 ClipData clipData = ClipData.newPlainText("simple text", "wxhackhome");
                 clipManager.setPrimaryClip(clipData);
                 if (clipManager.hasPrimaryClip()) {
-                    MyToast.showToast(mContext, "wxsybapp 已复制", Toast.LENGTH_SHORT);
+                    MyToast.showToast(mContext, "jzpaj520 已复制", Toast.LENGTH_SHORT);
                 }
                 intent = new Intent();
                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
                 intent.setAction(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 intent.setComponent(cmp);
+                //http://net.chuai.net/ewind.php?id=63
+//                intent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://net.chuai.net/ewind.php?id=63"));
                 break;
             //一键添加qq群
             case R.id.about_us_qqqun_txt:
                 intent = new Intent();
-                intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "M0d4LuGcOtHlfH8TFvU20E0BxYS8hZOH"));
-                PackageManager pm = mContext.getPackageManager();
-                List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
-                if (resolveInfos.size() == 0) {
-                    MyToast.showToast(mContext, "您的手机暂未安装QQ", Toast.LENGTH_SHORT);
-                    return;
-                } else {
-                    //开启一个新的栈
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
+                intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "ZxasxSH7FwHTJEQ0XT-uOsH1DSuuOeYk"));
                 break;
             //手机网址
             case R.id.about_us_phone_net_txt:
@@ -179,7 +165,7 @@ public class AboutUsFragment extends BaseFragment implements View.OnClickListene
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
-                MyToast.showToast(mContext, "您的手机暂未安装邮箱", Toast.LENGTH_SHORT);
+                MyToast.showToast(mContext, "您的手机暂不支持", Toast.LENGTH_SHORT);
             }
 
         }

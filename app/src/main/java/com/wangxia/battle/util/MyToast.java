@@ -19,29 +19,30 @@ import com.wangxia.battle.globe.App;
  */
 public class MyToast {
     private static Toast mToast;
+    public static final int TOAST_TIME = 200;
 
     /**
      * 安全弹出Toast。处理线程的问题。
      */
-    public static void safeShow(final Context context, final String text, final int lengthShort) {
+    public static void safeShow(final Context context, final String text) {
         if (Looper.myLooper() != Looper.getMainLooper()) {//如果不是在主线程弹出吐司，那么抛到主线程弹
             new Handler(Looper.getMainLooper()).post(
                     new Runnable() {
                         @Override
                         public void run() {
                             if (context == null){
-                                showToast(App.context, text, lengthShort);
+                                showToast(App.context, text, TOAST_TIME);
                             }else{
-                                showToast(context, text, lengthShort);
+                                showToast(context, text, TOAST_TIME);
                             }
                         }
                     }
             );
         } else {
             if (context == null){
-                showToast(App.context, text, lengthShort);
+                showToast(App.context, text, TOAST_TIME);
             }else{
-                showToast(context, text, lengthShort);
+                showToast(context, text, TOAST_TIME);
             }
         }
     }
@@ -64,5 +65,28 @@ public class MyToast {
         mToast.setText(text);
         mToast.setGravity(Gravity.CENTER,0,0);//屏幕中间显示
         mToast.show();
+    }
+
+    public static void s(final Context context, final String text) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {//如果不是在主线程弹出吐司，那么抛到主线程弹
+            new Handler(Looper.getMainLooper()).post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            if (context == null) {
+                                showToast(App.context, text, TOAST_TIME);
+                            } else {
+                                showToast(context, text, TOAST_TIME);
+                            }
+                        }
+                    }
+            );
+        } else {
+            if (context == null) {
+                showToast(App.context, text, TOAST_TIME);
+            } else {
+                showToast(context, text, TOAST_TIME);
+            }
+        }
     }
 }

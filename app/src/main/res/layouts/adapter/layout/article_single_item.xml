@@ -7,46 +7,34 @@
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
     android:paddingTop="17dp">
-    <!--图标-->
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv_pic"
-        android:layout_width="110dp"
-        android:layout_height="70dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:scaleType="centerCrop"
-        fresco:roundBottomLeft="true"
-        fresco:roundBottomRight="true"
-        fresco:roundTopLeft="true"
-        fresco:roundTopRight="true"
-        fresco:roundedCornerRadius="10dp"
-        />
-    <!--标题-->
+
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_pic"
+        android:layout_toLeftOf="@+id/iv_pic"
+        android:layout_alignParentLeft="true"
         android:ellipsize="end"
         android:lines="1"
-        android:text="苍翼之刃松鼠七夜诚150据点打法分享[图]"
         android:textColor="@color/colorTxtTitle"
-        android:textSize="16sp"/>
-    <!--简介-->
+        android:textSize="16sp" />
+
+
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_title"
         android:layout_below="@id/tv_title"
+        android:layout_toLeftOf="@+id/iv_pic"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lineSpacingMultiplier="1.2"
         android:maxLines="2"
-        android:text="苍翼之刃松鼠怎么打150据点？七夜诚怎么三星通关150？玩松鼠需要掌握连招的技巧，熟练的话150关卡还是好过的，网侠胖Z给大家带来详细内容。 ..."
         android:textColor="@color/colorTxtSub"
         android:textSize="12sp" />
-    <!--时间和点击数-->
+
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
@@ -54,7 +42,6 @@
         android:layout_alignLeft="@+id/tv_title"
         android:layout_below="@+id/tv_desc"
         android:layout_marginTop="3dp"
-        android:text="30分钟前"
         android:textColor="@color/colorTxtOther"
         android:textSize="10sp" />
 
@@ -62,12 +49,27 @@
         android:id="@+id/tv_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/tv_time"
-        android:drawableLeft="@drawable/hot_ico"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/iv_pic"
+        android:drawableLeft="@drawable/ic_hot"
         android:drawablePadding="3dp"
-        android:text="20"
         android:textColor="@color/colorTxtOther"
         android:textSize="10sp" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_pic"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:scaleType="centerCrop"
+        fresco:placeholderImage="@drawable/ic_pic_loading"
+        fresco:roundBottomLeft="true"
+        fresco:roundBottomRight="true"
+        fresco:roundTopLeft="true"
+        fresco:roundTopRight="true"
+        fresco:roundedCornerRadius="10dp" />
 
 </RelativeLayout>

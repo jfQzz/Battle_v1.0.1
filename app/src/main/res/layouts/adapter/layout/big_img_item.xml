@@ -5,7 +5,6 @@
     android:id="@+id/iv_icon"
     android:layout_width="160dp"
     android:layout_height="210dp"
-    fresco:actualImageScaleType="centerCrop"
     fresco:roundedCornerRadius="3dp"
     fresco:roundTopLeft="true"
     fresco:roundTopRight="true"

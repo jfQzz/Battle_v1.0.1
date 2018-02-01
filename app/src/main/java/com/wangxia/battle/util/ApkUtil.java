@@ -36,10 +36,11 @@ public class ApkUtil {
             File file = new File(path);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M ) {
                 Uri apkUri = FileProvider.getUriForFile(App.context, App.context.getPackageName() + ".apkDownload",file );
+                LogUtil.i(apkUri.getPath());
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(apkUri,  "application/vnd.android.package-archive");
-                LogUtil.i(apkUri.toString());
             }else{
+                LogUtil.i(file.getAbsolutePath());
                 intent.setDataAndType(Uri.fromFile(file),
                         "application/vnd.android.package-archive");
             }
@@ -152,4 +153,5 @@ public class ApkUtil {
         }
         return verName;
     }
+
 }

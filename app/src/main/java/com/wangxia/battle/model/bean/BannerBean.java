@@ -20,40 +20,6 @@ public class BannerBean {
     }
 
     public static class ItemsBean {
-        /**
-         * type : 1
-         * pics :
-         * link :
-         * subtitle :
-         * pic :
-         * piclist :
-         * realtime :
-         * endtime :
-         * ID : 699180
-         * title : 腾讯三国群英传手游版官方正式版
-         * apptitle : 腾讯三国群英传手游版
-         * appname : 三国群英传霸王之业
-         * desc : 《三国群英传霸王之业》是一款豪杰云集决战的策略游戏，寻找三国最美红颜，发动无数掠夺战争，财宝美女都要收归己有，你的军团成为最强力量的象征，凭借无敌雄兵横扫整个天下。腾讯三国群英传霸王之业特色：1、沙盘看战场无尽军团对决；2、掌上听音讯前线战...
-         * remark : 与子同袍征服三国。
-         * image : http://img.hackhome.com/img2017/9/13/9/343369186_APP.png
-         * viewimg : http://img2.hackhome.com/imgz/592117232.png
-         * hits : 178
-         * pcatalog : 263
-         * catalog : 301
-         * catalogname : 角色扮演
-         * labels : pk,三国,东方题材,端游改编
-         * softsize : 344955
-         * downurl : http://down.s.qq.com/download/1105866011/apk/10018365_com.tencent.tmgp.sgqyz.apk
-         * libaonum : 0
-         * time : 2017-9-13 9:37:00
-         * packageName : com.tencent.tmgp.sgqyz
-         * VerCode : 0
-         * SoftVer : v1.9.1
-         * GameType : 1
-         * AppUpCount : 11
-         * status : 0
-         * progress  : 100
-         */
 
         private int type;
         private String pics;

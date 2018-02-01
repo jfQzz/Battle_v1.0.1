@@ -26,5 +26,12 @@ public class LabelsPresenter implements IPresenter,ICallback {
     public void success(Object appInfo,int type) {
           iAppInfo.getResult(appInfo,type);
     }
+    @Override
+    public void error( ) {
+        iAppInfo.errorRequest();
+    }
 
+    @Override
+    public void fail() {
+        iAppInfo.failRequest();}
 }

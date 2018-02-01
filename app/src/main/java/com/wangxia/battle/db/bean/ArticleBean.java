@@ -9,11 +9,10 @@ public class ArticleBean {
     private int id;
     private String icon;
     private String title;
+    private String desc;
     private int hints;
-    private String publishTime;
-    private String author;
-    private String authorIco;
     private String time;
+    private String addTime;
 
     public int getId() {
         return id;
@@ -39,6 +38,14 @@ public class ArticleBean {
         this.title = title;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public int getHints() {
         return hints;
     }
@@ -47,28 +54,12 @@ public class ArticleBean {
         this.hints = hints;
     }
 
-    public String getPublishTime() {
-        return publishTime;
+    public String getAddTime() {
+        return addTime;
     }
 
-    public void setPublishTime(String publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getAuthorIco() {
-        return authorIco;
-    }
-
-    public void setAuthorIco(String authorIco) {
-        this.authorIco = authorIco;
+    public void setAddTime(String addTime) {
+        this.addTime = addTime;
     }
 
     public String getTime() {
@@ -79,15 +70,14 @@ public class ArticleBean {
         this.time = time;
     }
 
-    public ArticleBean(int id, String icon, String title, int hints, String publishTime, String author, String authorIco, String time) {
+    public ArticleBean(int id, String icon, String title, String desc, int hints, String time, String addTime) {
         this.id = id;
         this.icon = icon;
         this.title = title;
+        this.desc = desc;
         this.hints = hints;
-        this.publishTime = publishTime;
-        this.author = author;
-        this.authorIco = authorIco;
         this.time = time;
+        this.addTime = addTime;
     }
 
     public ArticleBean() {

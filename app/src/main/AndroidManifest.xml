@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wangxia.battle">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,6 +11,17 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
+        tools:ignore="MockLocation" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".globe.App"
@@ -30,14 +42,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GuideActivity" android:theme="@style/fullScreen" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.HomeActivity"  android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HomeActivity"  android:launchMode="singleTask" android:screenOrientation="portrait" />
         <activity android:name=".activity.AppDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.WebViewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.VideoListActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.VideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.TabWithPagerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TabWithPagerActivity" android:screenOrientation="portrait" />
 
         <!--友盟统计start at 2017.9.25 by 昝奥博-->
         <meta-data android:value="59c87a7d45297d1759000042" android:name="UMENG_APPKEY"/>
@@ -58,6 +71,56 @@
             </intent-filter>
         </receiver>
         <!--JPush receiver end-->
+        <!--Tencent 登录基础包 start-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1106493892" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            />
+        <!--Tencent 登录基础包 end-->
+        <!-- WX start by darryy -->
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--WX end-->
+        <!--sina start by darryy-->
+        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+        <!--sina end-->
+        <!-- 环信 start-->
+        <!--<meta-data android:name="EASEMOB_APPKEY"  android:value="1134161110115440#battle" />-->
+        <!--<service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>-->
+        <!--<service android:name="com.hyphenate.chat.EMJobService"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE"-->
+            <!--android:exported="true"-->
+            <!--/>-->
+        <!--<receiver android:name="com.hyphenate.chat.EMMonitorReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.PACKAGE_REMOVED"/>-->
+                <!--<data android:scheme="package"/>-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!-- 环信 end-->
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.wangxia.battle.apkDownload"

@@ -75,6 +75,47 @@ public class RecycleItemDecortion {
         }
     }
 
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount; //列数
+        private int leftAndRight; //左右间隔
+        private int topAndBottom; //上下间隔
+        private boolean includeEdge; //是否包含边缘
+
+        public GridSpacingItemDecoration(int spanCount, int leftAndRight,int topAndBottom ,boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.leftAndRight = DensityUtil.dip2px(leftAndRight);
+            this.topAndBottom = DensityUtil.dip2px(topAndBottom);
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            //这里是关键，需要根据你有几列来判断
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = leftAndRight - column * leftAndRight / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * leftAndRight / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = topAndBottom;
+                }
+                outRect.bottom = topAndBottom; // item bottom
+            } else {
+                outRect.left = column * leftAndRight / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = leftAndRight - (column + 1) * leftAndRight / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = 0; // item top
+                }
+            }
+        }
+    }
+
+
+
     public static class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
         private  final int[] ATTRS = new int[]{android.R.attr.listDivider};

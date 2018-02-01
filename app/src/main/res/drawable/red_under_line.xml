@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:left="10dp">
+       <color android:color="@color/colorRad"/>
+    </item>
+    <item android:left="60dp">
+        <color android:color="@color/colorLineSeparator"/>
+    </item>
+    <item android:bottom="2dp">
+        <color android:color="@color/colorWhite"/>
+    </item>
+
+</layer-list>

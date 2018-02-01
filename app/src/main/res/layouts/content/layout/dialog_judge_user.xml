@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?><!--选择是新注册还是绑定老账户-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="25dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_fresh_member"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我是萌新"
+            android:textColor="@color/colorAccent" />
+
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="5dp"
+            android:layout_height="35dp"
+            android:background="@color/colorLineSeparator" />
+
+        <TextView
+            android:id="@+id/tv_old_member"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我是元老"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_old_contain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RadioGroup
+            android:id="@+id/rg_account_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="绑定手机号"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rb_api"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="绑定 ID"
+                android:textColor="@color/colorTxtTitle"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edt_old_account"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorLineSeparator"
+            android:hint="请输入您以前的账户"
+            android:inputType="number"
+            android:paddingLeft="5dp"
+            android:textColorHint="@color/colorAccent"
+            android:textSize="12sp"
+            android:maxLength="11"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/ll_confirm_contain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/edt_verification_code_or_pass"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/colorLineSeparator"
+                android:hint="输入密码\输入验证码"
+                android:inputType="number"
+                android:paddingLeft="5dp"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_get_auth_code"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="@string/get_auth_code"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_bind_old_account"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:text="绑定"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</LinearLayout>

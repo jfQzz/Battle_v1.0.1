@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_arm"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="true"
+        fresco:roundingBorderColor="@color/colorYellow"
+        fresco:roundingBorderWidth="2dp" />
+
+    <TextView
+        android:id="@+id/tv_arm_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_arm"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/iv_arm"
+        android:textColor="@color/colorTxtTitle"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_arm_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_arm_name"
+        android:layout_below="@id/tv_arm_name"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorTxtTitle"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/tv_arm_consumer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_arm"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lineSpacingMultiplier="1.25"
+        android:padding="10dp"
+        android:textColor="@color/colorTxtSub"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_arm_need"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/tv_arm_consumer"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_make_need"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:gravity="center"
+            android:text="合成所需装备"
+            android:textColor="@color/colorTxtTitle" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rl_make_need"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/ll_arm_need" />
+
+    <TextView
+        android:id="@+id/tv_empty_need"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/ll_arm_need"
+        android:gravity="center"
+        android:text="@string/arm_need_null_hint"
+        android:textColor="@color/colorTxtSub"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_arm_make"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/ll_arm_need"
+        android:layout_marginTop="90dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_make"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/rl_make_need"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:gravity="center"
+            android:text="可合成装备"
+            android:textColor="@color/colorTxtTitle" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rl_make"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_arm_make" />
+
+    <TextView
+        android:id="@+id/tv_empty_make"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/ll_arm_make"
+        android:gravity="center"
+        android:text="@string/arm_make_null_hint"
+        android:textColor="@color/colorTxtSub"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.wangxia.battle.util.Constant;
 import com.wangxia.battle.util.DataCleanManager;
+import com.wangxia.battle.util.LogUtil;
 
 import java.io.File;
 
@@ -18,6 +19,7 @@ import java.io.File;
 public class AppInstallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        LogUtil.i("-----    新安装APP了 来自广播");
         //新安装和替换都会执行
         if (Intent.ACTION_PACKAGE_ADDED.equals(intent.getAction())
                 || Intent.ACTION_PACKAGE_INSTALL.equals(intent.getAction())

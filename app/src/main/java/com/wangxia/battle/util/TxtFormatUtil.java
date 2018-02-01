@@ -4,6 +4,8 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 
+import com.wangxia.battle.globe.App;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -16,15 +18,14 @@ import java.net.URLEncoder;
 public class TxtFormatUtil {
 
     public static Spanned HtmlFormat(String string){
+        if(TextUtils.isEmpty(string)){
+            return Html.fromHtml("</br>");
+        }
         return Html.fromHtml(string);
     }
     public static float formatNum(int size){
         return size/1024;
     }
-    /**
-     * 转成utf-8格式字符串,服务器如果不是gbk的,一般乱码都是这么处理
-     * 担有个很蛋疼的问题,就是再次刷新,如果转换已经是utf-8的就会又转回去了
-     */
     public static String toUtf8(String str) {
         String result = null;
         try {
@@ -253,5 +254,17 @@ public class TxtFormatUtil {
             }
         }
         return sb.toString();
+    }
+
+    public static String getPic(String subUrl){
+        if(TextUtils.isEmpty(subUrl)) subUrl = "gui/res/equip/63.png";
+        return App.picMap.get(subUrl.replaceAll("/","").replaceAll("_","").replace("\u002E",""));
+    }
+
+    public static Spanned formatColor(String desc){
+        return Html.fromHtml(desc.replaceAll("#c30C066","<font color='#c30C066'>").replaceAll("#c5591B7","<font color='#c5591B7'>").replaceAll("#cFE7921","<font color='#cFE7921'>").replaceAll("#n","</font>").replaceAll("#U","<font color='#ac13f3'>").replaceAll("#Y","<font color='#eb413d'>").replaceAll("#cE44833","<font color='#cE44833'>").replaceAll("#G","<font color='#008000'>").replaceAll("#r","\n").replaceAll("#R","\n"));
+    }
+    public static Spanned formatArmColor(String desc){
+        return Html.fromHtml(desc.replaceAll("#c30C066","<font color='#c30C066'>").replaceAll("#O","<font color='#c30C066'>").replaceAll("#cFE7921","<font color='#cFE7921'>").replaceAll("#c5591B7","<font color='#c5591B7'>").replaceAll("#n","</font>").replaceAll("#r",""));
     }
 }

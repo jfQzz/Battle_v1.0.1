@@ -73,7 +73,7 @@ public class FunctionBaseAdapter extends BaseAdapter {
         }else {
             holder = (Holder) view.getTag();
         }
-        holder.ivTypeBg.setImageResource(R.drawable.game_bride_ico);
+        holder.ivTypeBg.setImageResource(R.drawable.ic_game_bride);
         holder.tvTypeName.setText(mFunctionName[position]);
         holder.itemView.setTag(R.id.tag_first,position);
         return view;

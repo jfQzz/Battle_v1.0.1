@@ -1,43 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.wangxia.legend.activity.WebViewActivity">
+    android:clipChildren="false"
+    tools:context=".activity.WebViewActivity">
 
+    <com.wangxia.battle.view.ScrollListenerScrollView
+        android:id="@+id/sl_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/pg_load_rate"
+                style="@style/YellowColorProgressBarHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <com.tencent.smtt.sdk.WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/pg_load_rate"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/tv_evaluate_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/web_view"
+                android:background="@drawable/red_under_line"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="25dp"
+                android:text="@string/all_evaluate"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rl_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_evaluate_title"
+                android:background="@color/colorWhite"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/tv_evaluate_title"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:text="@string/empty_evaluate_hint"
+                android:textColor="@color/colorTxtSub"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </com.wangxia.battle.view.ScrollListenerScrollView>
     <include layout="@layout/actionbar" />
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/ll_bottom_function"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/linear_black_divider"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
 
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none" />
+        <LinearLayout
+            android:id="@+id/ll_evaluate"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/color_accent_frame_radius_shape"
+            android:gravity="center_vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_favorite_article"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_user_ic"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="7dp"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/ic_user_icon_empty"
+                fresco:roundAsCircle="true"
+                fresco:roundingBorderColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/tv_evaluate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLength="25"
+                android:text="忍着不说多难受..."
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@color/colorAccent"
-            android:clickable="true"
-            android:elevation="2dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/white_no_favorite"
-            android:translationZ="1dp"
-            app:borderWidth="0dp"
-            app:fabSize="mini"
-            app:pressedTranslationZ="12dp"
-            app:rippleColor="?colorPrimaryDark" />
+            android:layout_marginLeft="7dp">
 
-        <include layout="@layout/loading_view" />
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/iv_comment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:src="@drawable/ic_comment_count" />
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/iv_comment"
+                android:layout_marginLeft="17dp"
+                android:gravity="center_vertical"
+                android:text="0"
+                android:textColor="@color/colorRad"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="7dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_gray_favorite" />
+    </LinearLayout>
+
+</RelativeLayout>

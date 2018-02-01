@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_ly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap">
@@ -33,19 +34,22 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ImageView
-        android:layout_width="37dp"
-        android:layout_height="85dp"
+        android:id="@+id/iv_tree"
+        android:layout_width="97dp"
+        android:layout_height="95dp"
         android:layout_gravity="top"
-        android:src="@drawable/tree"
+        android:src="@drawable/ic_add_qq_group"
+        android:layout_marginRight="10dp"
         app:layout_anchor="@+id/ll_bottom_menu"
-        app:layout_anchorGravity="right|top" />
+        app:layout_anchorGravity="right|top"
+        android:visibility="gone"/>
 
 
     <!--菜单-->
     <LinearLayout
         android:id="@+id/ll_bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_bottom"
         android:orientation="horizontal">
